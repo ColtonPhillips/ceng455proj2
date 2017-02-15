@@ -1,0 +1,11 @@
+17:30:33 **** Incremental Build of configuration Debug for project serial_echo ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "serial_echo.elf"
+   text	   data	    bss	    dec	    hex	filename
+  49988	   2288	   3612	  55888	   da50	serial_echo.elf
+Finished building: serial_echo.siz
+ 
+
+17:30:34 Build Finished (took 993ms)
+
