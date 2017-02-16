@@ -46,6 +46,27 @@
 extern "C" {
 #endif 
 
+// CUSTOM CODE
+
+#include <message.h>
+#include <mqx.h>
+#include <bsp.h>
+
+#define HANDLER_QUEUE 8
+
+typedef struct handler_messsage
+{
+	MESSAGE_HEADER_STRUCT HEADER;
+	unsigned char DATA[5];
+} HANDLER_MESSAGE, * HANDLER_MESSAGE_PTR;
+
+HANDLER_MESSAGE_PTR msg_ptr;
+_queue_id          	handler_qid;
+_pool_id   			message_pool;
+
+//
+
+
 /*
 ** ===================================================================
 **     Callback    : serial_task

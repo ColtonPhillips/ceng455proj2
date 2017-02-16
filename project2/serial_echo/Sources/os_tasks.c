@@ -31,15 +31,16 @@
 #include "Events.h"
 #include "rtos_main_task.h"
 #include "os_tasks.h"
-//#include "interrupt/fsl_interrupt_manager.h"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif 
 
-
 /* User includes (#include below this line is not maintained by Processor Expert) */
+#include <message.h>
+#include <mqx.h>
+#include <bsp.h>
 
 /*
 ** ===================================================================
@@ -50,27 +51,60 @@ extern "C" {
 **     Returns : Nothing
 ** ===================================================================
 */
+
 void serial_task(os_task_param_t task_init_data)
 {
-  /* Write your local variable definition here */
-  printf("Colton rules\r\n");
-  
-  char buf[13];
-  sprintf(buf, "\n\rType here: ");
-  UART_DRV_SendDataBlocking(myUART_IDX, buf, sizeof(buf), 1000);
 
-  // Enable interrrupt
+	// Open a message queue
+	handler_qid  = _msgq_open(HANDLER_QUEUE, 0);
+	if (handler_qid == 0) {
+	  printf("\nCould not open a client message queue\n");
+	  _task_block();
+	}
+
+	/* create a message pool */
+   message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
+	  1, 0, 0);
+
+   if (message_pool == MSGPOOL_NULL_POOL_ID) {
+	  printf("\nCould not create a message pool\n");
+	  _task_block();
+   }
+
+  /* Write your local variable definition here */
+  int x = printf("serialTask Created!\r\n\r\n");
+  
+  char txBuf[13]; // replace with a struct! :P
+  sprintf(txBuf, "\n\rType here: ");
+
+  UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
 
 #ifdef PEX_USE_RTOS
-  while (1) {
+ while (1) {
 #endif
-    /* Write your code here ... */
+	// Receive a message
+	msg_ptr = _msgq_receive(handler_qid, 0);
 
-    OSA_TimeDelay(10);                 /* Example code (for task release) */
+	if (msg_ptr == NULL) {
+	         printf("\nCould not receive a message\n");
+	         _task_block();
+	}
 
-    
+	// (Filter) Handle Backspace, and other key codes
+	// Place into Buffer
+	char msgBuf[100];
+	sprintf(msgBuf, msg_ptr->DATA);
+
+
+	/* free the message */
+	_msg_free(msg_ptr);
+
+	UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+
+   // OSA_TimeDelay(10);                 /* Example code (for task release) */
+
 #ifdef PEX_USE_RTOS   
-  }
+ }
 #endif    
 }
 

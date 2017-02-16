@@ -7,7 +7,7 @@
 **     Version     : Component 1.3.0, Driver 01.00, CPU db: 3.00.000
 **     Repository  : KSDK 1.3.0
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-02-13, 16:56, # CodeGen: 1
+**     Date/Time   : 2017-02-15, 16:06, # CodeGen: 2
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -70,14 +70,7 @@ uart_state_t myUART_State;
 extern void UART_DRV_IRQHandler(uint32_t instance);
 void myUART_IRQHandler(void)
 {
-
-	// Put the character in the queue
-
-	// Disable interrupt
-
-
-  UART_DRV_IRQHandler(myUART_IDX);
-
+  UART_DRV_IRQHandler(myUART_IDX);      
 }      
       
 /* END myUART. */

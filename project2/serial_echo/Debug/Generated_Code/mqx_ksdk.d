@@ -79,8 +79,9 @@ Generated_Code/mqx_ksdk.o: ../Generated_Code/mqx_ksdk.c \
  C:/project2/serial_echo/Generated_Code/MainTask.h \
  C:/project2/serial_echo/Generated_Code/SerialTask.h \
  C:/project2/serial_echo/Generated_Code/myUART.h \
- C:/project2/serial_echo/Sources/os_tasks.h ../Generated_Code/MainTask.h \
- ../Generated_Code/SerialTask.h
+ C:/project2/serial_echo/Sources/os_tasks.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h \
+ ../Generated_Code/MainTask.h ../Generated_Code/SerialTask.h
 
 ../Generated_Code/mqx_ksdk.h:
 
@@ -245,6 +246,8 @@ C:/project2/serial_echo/Generated_Code/SerialTask.h:
 C:/project2/serial_echo/Generated_Code/myUART.h:
 
 C:/project2/serial_echo/Sources/os_tasks.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h:
 
 ../Generated_Code/MainTask.h:
 
