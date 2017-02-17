@@ -74,6 +74,7 @@ Sources/Events.o: ../Sources/Events.c \
  C:/project2/serial_echo/Generated_Code/MainTask.h \
  C:/project2/serial_echo/Generated_Code/SerialTask.h \
  C:/project2/serial_echo/Generated_Code/myUART.h \
+ C:/project2/serial_echo/Generated_Code/UserTask.h \
  ../Sources/rtos_main_task.h ../Sources/os_tasks.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp.h \
@@ -236,6 +237,8 @@ C:/project2/serial_echo/Generated_Code/MainTask.h:
 C:/project2/serial_echo/Generated_Code/SerialTask.h:
 
 C:/project2/serial_echo/Generated_Code/myUART.h:
+
+C:/project2/serial_echo/Generated_Code/UserTask.h:
 
 ../Sources/rtos_main_task.h:
 

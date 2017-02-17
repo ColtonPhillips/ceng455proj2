@@ -5,18 +5,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Sources/Events.c \
+../Sources/access_functions.c \
 ../Sources/main.c \
 ../Sources/os_tasks.c \
 ../Sources/rtos_main_task.c 
 
 OBJS += \
 ./Sources/Events.o \
+./Sources/access_functions.o \
 ./Sources/main.o \
 ./Sources/os_tasks.o \
 ./Sources/rtos_main_task.o 
 
 C_DEPS += \
 ./Sources/Events.d \
+./Sources/access_functions.d \
 ./Sources/main.d \
 ./Sources/os_tasks.d \
 ./Sources/rtos_main_task.d 

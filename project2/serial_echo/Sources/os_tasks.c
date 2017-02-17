@@ -31,7 +31,7 @@
 #include "Events.h"
 #include "rtos_main_task.h"
 #include "os_tasks.h"
-
+#include "access_functions.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,57 +54,122 @@ extern "C" {
 
 void serial_task(os_task_param_t task_init_data)
 {
-
-	// Open a message queue
+// Open an ISR message queue
 	handler_qid  = _msgq_open(HANDLER_QUEUE, 0);
 	if (handler_qid == 0) {
-	  printf("\nCould not open a client message queue\n");
+	  printf("\nCould not open a handler message queue\n");
 	  _task_block();
 	}
 
 	/* create a message pool */
-   message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
+   handler_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
 	  1, 0, 0);
 
-   if (message_pool == MSGPOOL_NULL_POOL_ID) {
-	  printf("\nCould not create a message pool\n");
+   if (handler_message_pool == MSGPOOL_NULL_POOL_ID) {
+	  printf("\nCould not create a handler message pool\n");
 	  _task_block();
    }
 
   /* Write your local variable definition here */
-  int x = printf("serialTask Created!\r\n\r\n");
+  printf("serialTask Created!\r\n\r\n");
+
+/* Create putline Message Queue as Well! */
+  	putline_qid  = _msgq_open(PUTLINE_QUEUE, 0);
+  	if (putline_qid == 0) {
+  	  printf("\nCould not open a write message queue\n");
+  	  _task_block();
+  	}
+
+  	/* create a message pool */
+  	putline_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
+  	  1, 0, 0);
+
+     if (putline_message_pool == MSGPOOL_NULL_POOL_ID) {
+  	  printf("\nCould not create a putline message pool\n");
+  	  _task_block();
+     }
   
-  char txBuf[13]; // replace with a struct! :P
+  // Write to debug console
+  char txBuf[16];
   sprintf(txBuf, "\n\rType here: ");
 
   UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
 
+ // Repeat forever
 #ifdef PEX_USE_RTOS
  while (1) {
 #endif
-	// Receive a message
+	// Receive a message from ISR
 	msg_ptr = _msgq_receive(handler_qid, 0);
-
 	if (msg_ptr == NULL) {
-	         printf("\nCould not receive a message\n");
+	         printf("\nCould not receive an ISR message\n");
 	         _task_block();
 	}
 
+
+
+
 	// (Filter) Handle Backspace, and other key codes
 	// Place into Buffer
-	char msgBuf[100];
 	sprintf(msgBuf, msg_ptr->DATA);
-
+	UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 
 	/* free the message */
 	_msg_free(msg_ptr);
 
-	UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
-
-   // OSA_TimeDelay(10);                 /* Example code (for task release) */
-
 #ifdef PEX_USE_RTOS   
  }
+#endif    
+}
+
+/*
+** ===================================================================
+**     Callback    : user_task
+**     Description : Task function entry.
+**     Parameters  :
+**       task_init_data - OS task parameter
+**     Returns : Nothing
+** ===================================================================
+*/
+void user_task(os_task_param_t task_init_data)
+{
+	// incr number of tasks
+	num_of_tasks++;
+	// Data declarations
+	_queue_id          	getline_qid; // For getline (when a user task reads)
+	_pool_id   			getline_message_pool;
+
+	// Open a getline message queue
+	getline_qid  = _msgq_open(GETLINE_QUEUE+num_of_tasks, 0);
+	if (getline_qid == 0) {
+	  printf("\nCould not open a Usertask getline message queue\n");
+	  _task_block();
+	}
+
+	/* create a message pool */
+	getline_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
+	  1, 0, 0);
+   if (getline_message_pool == MSGPOOL_NULL_POOL_ID) {
+	  printf("\nCould not create a user task message pool\n");
+	 // printf("%d\n\n", _task_get_error());
+	  _task_block();
+   }
+
+   MQX_EOK;
+
+#ifdef PEX_USE_RTOS
+  while (1) {
+#endif
+    /* Write your code here ... */
+    
+    
+   // OSA_TimeDelay(10);                 /* Example code (for task release) */
+   
+    
+    
+    
+#ifdef PEX_USE_RTOS   
+  }
 #endif    
 }
 

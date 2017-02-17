@@ -42,6 +42,7 @@
 #include "MainTask.h"
 #include "SerialTask.h"
 #include "myUART.h"
+#include "UserTask.h"
 #if CPU_INIT_CONFIG
   #include "Init_Config.h"
 #endif

@@ -1,0 +1,172 @@
+/* ###################################################################
+**     Filename    : os_tasks.c
+**     Project     : serial_echo
+**     Processor   : MK64FN1M0VLL12
+**     Component   : Events
+**     Version     : Driver 01.00
+**     Compiler    : GNU C Compiler
+**     Date/Time   : 2017-02-13, 16:56, # CodeGen: 1
+**     Abstract    :
+**         This is user's event module.
+**         Put your event handler code here.
+**     Settings    :
+**     Contents    :
+**         serial_task - void serial_task(os_task_param_t task_init_data);
+**
+** ###################################################################*/
+/*!
+** @file os_tasks.c
+** @version 01.00
+** @brief
+**         This is user's event module.
+**         Put your event handler code here.
+*/         
+/*!
+**  @addtogroup os_tasks_module os_tasks module documentation
+**  @{
+*/         
+/* MODULE os_tasks */
+
+#include "Cpu.h"
+#include "Events.h"
+#include "rtos_main_task.h"
+#include "os_tasks.h"
+#include "access_functions.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif 
+
+/* User includes (#include below this line is not maintained by Processor Expert) */
+#include <message.h>
+#include <mqx.h>
+#include <bsp.h>
+
+/*
+** ===================================================================
+**     Callback    : serial_task
+**     Description : Task function entry.
+**     Parameters  :
+**       task_init_data - OS task parameter
+**     Returns : Nothing
+** ===================================================================
+*/
+
+void serial_task(os_task_param_t task_init_data)
+{
+	// Open an ISR message queue
+	handler_qid  = _msgq_open(HANDLER_QUEUE, 0);
+	if (handler_qid == 0) {
+	  printf("\nCould not open a handler message queue\n");
+	  _task_block();
+	}
+
+	/* create a message pool */
+   handler_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
+	  1, 0, 0);
+
+   if (message_pool == MSGPOOL_NULL_POOL_ID) {
+	  printf("\nCould not create a message pool\n");
+	  _task_block();
+   }
+
+  /* Write your local variable definition here */
+  printf("serialTask Created!\r\n\r\n");
+
+  /* Create putline Message Queue as Well! */
+  	putline_qid  = _msgq_open(PUTLINE_QUEUE, 0);
+  	if (putline_qid == 0) {
+  	  printf("\nCould not open a write message queue\n");
+  	  _task_block();
+  	}
+
+  	/* create a message pool */
+  	handler_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
+  	  1, 0, 0);
+
+     if (handler_message_pool == MSGPOOL_NULL_POOL_ID) {
+  	  printf("\nCould not create a message pool\n");
+  	  _task_block();
+     }
+
+  
+  char txBuf[13]; // replace with a struct! :P
+  sprintf(txBuf, "\n\rType here: ");
+
+  UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
+
+#ifdef PEX_USE_RTOS
+ while (1) {
+#endif
+	// Receive a message
+	msg_ptr = _msgq_receive(handler_qid, 0);
+
+	if (msg_ptr == NULL) {
+	         printf("\nCould not receive a message\n");
+	         _task_block();
+	}
+
+	// (Filter) Handle Backspace, and other key codes
+	// Place into Buffer
+
+	sprintf(msgBuf, msg_ptr->DATA);
+
+
+	/* free the message */
+	_msg_free(msg_ptr);
+
+	UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+
+   // OSA_TimeDelay(10);                 /* Example code (for task release) */
+
+#ifdef PEX_USE_RTOS   
+ }
+#endif    
+}
+
+/*
+** ===================================================================
+**     Callback    : user_task
+**     Description : Task function entry.
+**     Parameters  :
+**       task_init_data - OS task parameter
+**     Returns : Nothing
+** ===================================================================
+*/
+void user_task(os_task_param_t task_init_data)
+{
+  /* Write your local variable definition here */
+  
+#ifdef PEX_USE_RTOS
+  while (1) {
+#endif
+    /* Write your code here ... */
+    
+    
+    OSA_TimeDelay(10);                 /* Example code (for task release) */
+   
+    
+    
+    
+#ifdef PEX_USE_RTOS   
+  }
+#endif    
+}
+
+/* END os_tasks */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif 
+
+/*!
+** @}
+*/
+/*
+** ###################################################################
+**
+**     This file was created by Processor Expert 10.5 [05.21]
+**     for the Freescale Kinetis series of microcontrollers.
+**
+** ###################################################################
+*/

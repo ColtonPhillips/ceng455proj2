@@ -1,0 +1,20 @@
+/*
+ * access_functions.h
+ *
+ *  Created on: Feb 16, 2017
+ *      Author: coltonp
+ */
+
+#ifndef SOURCES_ACCESS_FUNCTIONS_H_
+#define SOURCES_ACCESS_FUNCTIONS_H_
+
+#include <stdio.h>
+#include <mqx.h>
+#include <bsp.h>
+
+bool OpenR(uint_16 stream_no);
+bool _getline(char * string);
+_queue_id OpenW();
+_queue
+
+#endif /* SOURCES_ACCESS_FUNCTIONS_H_ */

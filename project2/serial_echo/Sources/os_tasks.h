@@ -41,6 +41,7 @@
 #include "MainTask.h"
 #include "SerialTask.h"
 #include "myUART.h"
+#include "UserTask.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,19 +54,27 @@ extern "C" {
 #include <bsp.h>
 
 #define HANDLER_QUEUE 8
+#define PUTLINE_QUEUE 9
+#define GETLINE_QUEUE 10
 
+// this struct is also used for putline and getline
 typedef struct handler_messsage
 {
 	MESSAGE_HEADER_STRUCT HEADER;
-	unsigned char DATA[5];
+	unsigned char DATA[64];
 } HANDLER_MESSAGE, * HANDLER_MESSAGE_PTR;
 
 HANDLER_MESSAGE_PTR msg_ptr;
-_queue_id          	handler_qid;
-_pool_id   			message_pool;
+_queue_id          	handler_qid; // For the isr
+_queue_id          	putline_qid; // For putline (when a user task writes)
 
-//
+_pool_id   			handler_message_pool; // for the isr
+_pool_id			putline_message_pool; // for write
 
+// Message Buffer
+unsigned char msgBuf[100];
+
+static int num_of_tasks = 0;
 
 /*
 ** ===================================================================
@@ -78,6 +87,17 @@ _pool_id   			message_pool;
 */
 void serial_task(os_task_param_t task_init_data);
 
+
+/*
+** ===================================================================
+**     Callback    : user_task
+**     Description : Task function entry.
+**     Parameters  :
+**       task_init_data - OS task parameter
+**     Returns : Nothing
+** ===================================================================
+*/
+void user_task(os_task_param_t task_init_data);
 
 /* END os_tasks */
 

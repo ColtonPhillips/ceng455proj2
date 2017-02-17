@@ -57,25 +57,17 @@ extern "C" {
 */
 void myUART_RxCallback(uint32_t instance, void * uartState)
 {
-	_queue_id	isr_qid;
 	bool result;
 
-	// Open MSG Q
-	isr_qid = _msgq_open(HANDLER_QUEUE, 0);
-	if (isr_qid == 0) {
-	      printf("\nCould not open a client message queue\n");
-	      _task_block();
-	   }
-
 	// Allocate a message
-	msg_ptr = (HANDLER_MESSAGE_PTR)_msg_alloc(message_pool);
+	msg_ptr = (HANDLER_MESSAGE_PTR)_msg_alloc(handler_message_pool);
 	 if (msg_ptr == NULL) {
 		 printf("\nCould not allocate a message\n");
 		 _task_block();
 	  }
 
 	 // Populate a message
-	 msg_ptr->HEADER.SOURCE_QID = isr_qid;
+	 msg_ptr->HEADER.SOURCE_QID = 0;
 	 msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, HANDLER_QUEUE);
 	 msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
 		 strlen((char *)msg_ptr->DATA) + 1;

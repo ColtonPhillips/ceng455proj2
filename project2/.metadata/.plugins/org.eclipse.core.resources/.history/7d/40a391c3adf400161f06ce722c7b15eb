@@ -1,0 +1,15 @@
+/*
+ * access_functions.c
+ *
+ *  Created on: Feb 16, 2017
+ *      Author: coltonp
+ */
+
+#include "access_functions.h"
+
+bool OpenR(uint_16 stream_no){}
+
+bool _getline(char * string){}
+_queue_id OpenW(){}
+_queue_id _putline(_queue_id qid, char * string){}
+bool Close(){}

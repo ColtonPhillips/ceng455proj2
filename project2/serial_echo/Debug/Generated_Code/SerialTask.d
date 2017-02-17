@@ -74,6 +74,7 @@ Generated_Code/SerialTask.o: ../Generated_Code/SerialTask.c \
  C:/project2/serial_echo/Generated_Code/MainTask.h \
  C:/project2/serial_echo/Generated_Code/SerialTask.h \
  C:/project2/serial_echo/Generated_Code/myUART.h \
+ C:/project2/serial_echo/Generated_Code/UserTask.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp.h \
  C:/project2/serial_echo/Generated_Code/board.h \
@@ -230,6 +231,8 @@ C:/project2/serial_echo/Generated_Code/MainTask.h:
 C:/project2/serial_echo/Generated_Code/SerialTask.h:
 
 C:/project2/serial_echo/Generated_Code/myUART.h:
+
+C:/project2/serial_echo/Generated_Code/UserTask.h:
 
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h:
 

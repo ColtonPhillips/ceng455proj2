@@ -1,0 +1,28 @@
+/*
+ * access_functions.h
+ *
+ *  Created on: Feb 16, 2017
+ *      Author: coltonp
+ */
+
+#ifndef SOURCES_ACCESS_FUNCTIONS_H_
+#define SOURCES_ACCESS_FUNCTIONS_H_
+
+#include <stdio.h>
+#include <mqx.h>
+#include <bsp.h>
+#include <message.h>
+
+// Access Memory
+extern bool OpenRStatus = false; // whether someone has access to R or W
+extern bool OpenWStatus = false;
+extern _queue_id read_queue = -1;
+
+// Access functions
+bool OpenR(_queue_id stream_no); // stream_no is like, a q id
+bool _getline(char * string);
+_queue_id OpenW();
+_queue_id _putline(_queue_id qid, char * string);
+bool Close();
+
+#endif /* SOURCES_ACCESS_FUNCTIONS_H_ */

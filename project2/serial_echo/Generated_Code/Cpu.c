@@ -8,7 +8,7 @@
 **     Repository  : KSDK 1.3.0
 **     Datasheet   : K64P144M120SF5RM, Rev.2, January 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-02-15, 16:33, # CodeGen: 3
+**     Date/Time   : 2017-02-16, 16:59, # CodeGen: 6
 **     Abstract    :
 **
 **     Settings    :
@@ -118,6 +118,9 @@ void Components_Init(void)
   UART_DRV_InstallRxCallback(myUART_IDX, myUART_RxCallback, myRxBuff, NULL, true);
   /*! myUART Auto initialization end */
     
+  /*! UserTask Auto initialization start */ 
+  (void)UserTask_Init();
+  /*! UserTask Auto initialization end */                       
 }
 #endif /* CPU_COMPONENTS_INIT */
 

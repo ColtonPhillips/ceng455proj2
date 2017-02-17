@@ -74,6 +74,7 @@ Generated_Code/myUART.o: ../Generated_Code/myUART.c \
  C:/project2/serial_echo/Generated_Code/MainTask.h \
  C:/project2/serial_echo/Generated_Code/SerialTask.h \
  C:/project2/serial_echo/Generated_Code/myUART.h \
+ C:/project2/serial_echo/Generated_Code/UserTask.h \
  ../Generated_Code/myUART.h
 
 C:/project2/serial_echo/Sources/Events.h:
@@ -225,5 +226,7 @@ C:/project2/serial_echo/Generated_Code/MainTask.h:
 C:/project2/serial_echo/Generated_Code/SerialTask.h:
 
 C:/project2/serial_echo/Generated_Code/myUART.h:
+
+C:/project2/serial_echo/Generated_Code/UserTask.h:
 
 ../Generated_Code/myUART.h:

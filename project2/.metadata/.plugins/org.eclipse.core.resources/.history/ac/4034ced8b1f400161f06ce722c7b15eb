@@ -1,0 +1,39 @@
+/*
+ * access_functions.c
+ *
+ *  Created on: Feb 16, 2017
+ *      Author: coltonp
+ */
+
+#include "access_functions.h"
+
+// User Tasks access serial channel for reading
+bool OpenR(_queue_id stream_no){
+	if (OpenRStatus == false) {
+		OpenRStatus = true;
+		read_queue = stream_no;
+		return true;
+		}
+	else {
+		return false;
+	}
+
+	return false;
+}
+
+// User Task actually gets data from serial channel
+bool _getline(char * string){
+	return false;
+}
+// Access serial channel for writing
+_queue_id OpenW(){
+	return 1;
+}
+// Actually put a string onto the serial channel
+_queue_id _putline(_queue_id qid, char * string){
+	return 1;
+}
+// Revoke read and/or write priveledges
+bool Close(){
+	return false;
+}

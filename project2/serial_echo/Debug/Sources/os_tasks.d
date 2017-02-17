@@ -74,12 +74,18 @@ Sources/os_tasks.o: ../Sources/os_tasks.c \
  C:/project2/serial_echo/Generated_Code/MainTask.h \
  C:/project2/serial_echo/Generated_Code/SerialTask.h \
  C:/project2/serial_echo/Generated_Code/myUART.h \
+ C:/project2/serial_echo/Generated_Code/UserTask.h \
  ../Sources/rtos_main_task.h ../Sources/os_tasks.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp.h \
  C:/project2/serial_echo/Generated_Code/board.h \
  C:/project2/serial_echo/Generated_Code/pin_init.h \
- C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h \
+ ../Sources/access_functions.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/stdio.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/std_prv.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fcntl.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/nio.h
 
 C:/project2/serial_echo/Generated_Code/Cpu.h:
 
@@ -233,6 +239,8 @@ C:/project2/serial_echo/Generated_Code/SerialTask.h:
 
 C:/project2/serial_echo/Generated_Code/myUART.h:
 
+C:/project2/serial_echo/Generated_Code/UserTask.h:
+
 ../Sources/rtos_main_task.h:
 
 ../Sources/os_tasks.h:
@@ -246,3 +254,13 @@ C:/project2/serial_echo/Generated_Code/board.h:
 C:/project2/serial_echo/Generated_Code/pin_init.h:
 
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h:
+
+../Sources/access_functions.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/stdio.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/std_prv.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fcntl.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/nio.h:
