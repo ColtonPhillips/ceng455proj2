@@ -62,10 +62,10 @@ void serial_task(os_task_param_t task_init_data)
 	}
 
 	/* create a message pool */
-   handler_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
+   message_pool = _msgpool_create(sizeof(MESSAGE),
 	  1, 0, 0);
 
-   if (handler_message_pool == MSGPOOL_NULL_POOL_ID) {
+   if (message_pool == MSGPOOL_NULL_POOL_ID) {
 	  printf("\nCould not create a handler message pool\n");
 	  _task_block();
    }
@@ -80,25 +80,12 @@ void serial_task(os_task_param_t task_init_data)
   	  _task_block();
   	}
 
-  	/* create a message pool */
-  	putline_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
-  	  1, 0, 0);
-
-     if (putline_message_pool == MSGPOOL_NULL_POOL_ID) {
-  	  printf("\nCould not create a putline message pool\n");
-  	  _task_block();
-     }
-  
   // Write to debug console
-  char txBuf[16];
   sprintf(txBuf, "\n\rType here: ");
 
   UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
 
- // Repeat forever
-#ifdef PEX_USE_RTOS
  while (1) {
-#endif
 	// Receive a message from ISR
 	msg_ptr = _msgq_receive(handler_qid, 0);
 	if (msg_ptr == NULL) {
@@ -106,20 +93,25 @@ void serial_task(os_task_param_t task_init_data)
 	         _task_block();
 	}
 
-
-
+	/*  Special Characters Hex values:
+	 * 	  Ctrl + H: Erase character -> 0x8
+	 * 	  Ctrl + W: Erase previous word -> 0x17
+	 * 	  Ctrl + U: Erase Line   -> 0x15
+	 *    Enter: flush the buffer (putline) and do a line carriage and stuff ->  0xd  */
 
 	// (Filter) Handle Backspace, and other key codes
 	// Place into Buffer
 	sprintf(msgBuf, msg_ptr->DATA);
+
+	// if no user tasks, Send characters to null device (do nothing)
 	UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+	printf("%x",msgBuf[0]);
 
 	/* free the message */
 	_msg_free(msg_ptr);
 
-#ifdef PEX_USE_RTOS   
  }
-#endif    
+
 }
 
 /*
@@ -137,7 +129,6 @@ void user_task(os_task_param_t task_init_data)
 	num_of_tasks++;
 	// Data declarations
 	_queue_id          	getline_qid; // For getline (when a user task reads)
-	_pool_id   			getline_message_pool;
 
 	// Open a getline message queue
 	getline_qid  = _msgq_open(GETLINE_QUEUE+num_of_tasks, 0);
@@ -145,17 +136,6 @@ void user_task(os_task_param_t task_init_data)
 	  printf("\nCould not open a Usertask getline message queue\n");
 	  _task_block();
 	}
-
-	/* create a message pool */
-	getline_message_pool = _msgpool_create(sizeof(HANDLER_MESSAGE),
-	  1, 0, 0);
-   if (getline_message_pool == MSGPOOL_NULL_POOL_ID) {
-	  printf("\nCould not create a user task message pool\n");
-	 // printf("%d\n\n", _task_get_error());
-	  _task_block();
-   }
-
-   MQX_EOK;
 
 #ifdef PEX_USE_RTOS
   while (1) {

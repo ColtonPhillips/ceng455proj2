@@ -13,13 +13,15 @@
 #include <bsp.h>
 #include <message.h>
 
+// TODO: Mutex/Sem the data structures to prevent race conditions
+
 // Access Memory
-extern bool OpenRStatus = false; // whether someone has access to R or W
-extern bool OpenWStatus = false;
-extern _queue_id read_queue = -1;
+bool OpenRStatus = false; // whether someone has access to R or W
+bool OpenWStatus = false;
+_queue_id read_queue = -1;
 
 // Access functions
-bool OpenR(_queue_id stream_no); // stream_no is like, a q id
+bool OpenR(_queue_id stream_no);
 bool _getline(char * string);
 _queue_id OpenW();
 _queue_id _putline(_queue_id qid, char * string);

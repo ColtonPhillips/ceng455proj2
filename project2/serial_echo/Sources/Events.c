@@ -57,10 +57,8 @@ extern "C" {
 */
 void myUART_RxCallback(uint32_t instance, void * uartState)
 {
-	bool result;
-
 	// Allocate a message
-	msg_ptr = (HANDLER_MESSAGE_PTR)_msg_alloc(handler_message_pool);
+	msg_ptr = (MESSAGE_PTR)_msg_alloc(message_pool);
 	 if (msg_ptr == NULL) {
 		 printf("\nCould not allocate a message\n");
 		 _task_block();
@@ -75,8 +73,7 @@ void myUART_RxCallback(uint32_t instance, void * uartState)
 	  msg_ptr->DATA[1]= '\0';
 
 	  // Send the message
-	  result = _msgq_send(msg_ptr);
-	  if (result != TRUE) {
+	  if (!_msgq_send(msg_ptr)) {
 	  	 printf("\nCould not send a message\n");
 	  	 _task_block();
 	  }

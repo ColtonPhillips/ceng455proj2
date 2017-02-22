@@ -58,23 +58,26 @@ extern "C" {
 #define GETLINE_QUEUE 10
 
 // this struct is also used for putline and getline
-typedef struct handler_messsage
+typedef struct my_messsage
 {
 	MESSAGE_HEADER_STRUCT HEADER;
 	unsigned char DATA[64];
-} HANDLER_MESSAGE, * HANDLER_MESSAGE_PTR;
+} MESSAGE, * MESSAGE_PTR;
 
-HANDLER_MESSAGE_PTR msg_ptr;
+MESSAGE_PTR msg_ptr;
 _queue_id          	handler_qid; // For the isr
 _queue_id          	putline_qid; // For putline (when a user task writes)
 
-_pool_id   			handler_message_pool; // for the isr
-_pool_id			putline_message_pool; // for write
+_pool_id   			message_pool;
 
-// Message Buffer
+// Message Buffer(s)
 unsigned char msgBuf[100];
+unsigned char txBuf[16];
 
 static int num_of_tasks = 0;
+
+// TODO: mutex the num_of_tasks to prevent race cond.
+//
 
 /*
 ** ===================================================================
