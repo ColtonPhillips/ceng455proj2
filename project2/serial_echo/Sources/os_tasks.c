@@ -27,13 +27,6 @@
 */         
 /* MODULE os_tasks */
 
-	/*  Special Characters Hex values:
-	 * 	  Ctrl + H: Erase character -> 0x8
-	 * 	  Ctrl + W: Erase previous word -> 0x17
-	 * 	  Ctrl + U: Erase Line   -> 0x15
-	 *    Enter: flush the buffer (putline) and do a line carriage and stuff ->  0xd
-	 *    */
-
 
 #include "Cpu.h"
 #include "Events.h"
@@ -62,8 +55,7 @@ extern "C" {
 ** ===================================================================
 */
 
-void serial_task(os_task_param_t task_init_data)
-{
+void init () {
 	/*  Initialize Read
 	MUTEX_ATTR_STRUCT mutexattr;
 	 Initialize mutex attributes:
@@ -85,14 +77,12 @@ void serial_task(os_task_param_t task_init_data)
 
 	/* create a message pool */
    message_pool = _msgpool_create(sizeof(MESSAGE),
-	  10, 0, 0);
+	  50, 0, 0);
    if (message_pool == MSGPOOL_NULL_POOL_ID) {
 	  printf("\nCould not create a handler message pool\n");
 	  _task_block();
    }
 
-  /* Write your local variable definition here */
-  printf("serialTask Created!\r\n\r\n");
 
 /* Create putline Message Queue as Well! */
   	putline_qid  = _msgq_open(PUTLINE_QUEUE, 0);
@@ -101,7 +91,15 @@ void serial_task(os_task_param_t task_init_data)
   	  _task_block();
   	}
 
-  // Write to debug console
+}
+
+void serial_task(os_task_param_t task_init_data)
+{
+	init();
+
+    /* Write your local variable definition here */
+    printf("serialTask Created!\r\n\r\n");
+  	// Write to debug console
   sprintf(txBuf, "\n\rType here: ");
 
   UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
@@ -116,7 +114,7 @@ void serial_task(os_task_param_t task_init_data)
 	}
 
 	// We only Read if a user has called OpenR
-	if (num_of_tasks == 0) {
+	if (!OpenRStatus) {
 			/* free the message */
 			_msg_free(msg_ptr);
 			continue;
@@ -159,18 +157,24 @@ void serial_task(os_task_param_t task_init_data)
 	//Enter:
 	else if (new_char == 0xd) {
 		sprintf(msgBuf, "\n");
-		strcat(handleBuf, msgBuf);
+		strcat(handleBuf, msgBuf); // call getline
 		sprintf(msgBuf, "\r\n");
 		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 	}
-	// any normal character
-	else {
+	// any normal character a-z and numbers, <,.; etc
+	else if (new_char >= 0x20 && new_char <= 0x7E ){
 		sprintf(msgBuf, msg_ptr->DATA);
 		printf("msgBuf: %s\n", msg_ptr->DATA);
 		strcat(handleBuf, msgBuf);
 		printf("%s, %d", msgBuf ,sizeof(msgBuf));
 		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 	}
+	// throw all other characters away
+	else {
+
+	}
+
+	_msg_free(msg_ptr);
 	printf("buf: %s\n\n",handleBuf);
 
 	OSA_TimeDelay(100);
@@ -190,6 +194,7 @@ void user_task(os_task_param_t task_init_data)
 {
 	// incr number of tasks
 	num_of_tasks++;
+
 	// Data declarations
 	_queue_id          	getline_qid; // For getline (when a user task reads)
 
@@ -200,6 +205,7 @@ void user_task(os_task_param_t task_init_data)
 	  _task_block();
 	}
 
+	OpenR(getline_qid);
   //while (1) {
 
     

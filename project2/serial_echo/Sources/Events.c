@@ -71,9 +71,6 @@ void myUART_RxCallback(uint32_t instance, void * uartState)
 		 strlen((char *)msg_ptr->DATA) + 1;
 	 sprintf(msg_ptr->DATA , myRxBuff);
 
-//	 msg_ptr->DATA[0]= myRxBuff[0];
-	//  msg_ptr->DATA[1]= '\0';
-
 	  // Send the message
 	  if (!_msgq_send(msg_ptr)) {
 	  	 printf("\nCould not send a message\n");

@@ -1,0 +1,47 @@
+/*
+ * access_functions.h
+ *
+ *  Created on: Feb 16, 2017
+ *      Author: coltonp
+ */
+
+#ifndef SOURCES_ACCESS_FUNCTIONS_H_
+#define SOURCES_ACCESS_FUNCTIONS_H_
+
+#include <stdio.h>
+#include <mqx.h>
+#include <bsp.h>
+#include <mutex.h>
+#include <message.h>
+//#include "os_tasks.c"
+
+// TODO: Mutex/Sem the data structures to prevent race conditions
+
+// Linked List
+typedef struct node {
+	_queue_id data;
+	struct node* next;
+} node, * node_ptr;
+
+node* create (queue_id data, node* next);
+node* prepend(node* head,queue_id data);
+//void traverse(node* head,void * f);
+int count(node *head);
+node* append(node* head, queue_id data);
+node* insert_after(node *head, queue_id data, node* prev);
+node* search(node* head,queue_id data);
+node* remove_any(node* head,node* nd);
+
+// Access Memory
+bool OpenRStatus = false; // whether someone has access to R or W
+bool OpenWStatus = false;
+node  read_head;
+
+// Access functions
+bool OpenR(_queue_id stream_no);
+bool _getline(char * string);
+_queue_id OpenW();
+_queue_id _putline(_queue_id qid, char * string);
+bool Close(_queue_id qid);
+
+#endif /* SOURCES_ACCESS_FUNCTIONS_H_ */

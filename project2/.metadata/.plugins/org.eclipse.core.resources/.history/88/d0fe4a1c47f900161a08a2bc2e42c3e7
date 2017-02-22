@@ -1,0 +1,225 @@
+/* ###################################################################
+**     Filename    : os_tasks.c
+**     Project     : serial_echo
+**     Processor   : MK64FN1M0VLL12
+**     Component   : Events
+**     Version     : Driver 01.00
+**     Compiler    : GNU C Compiler
+**     Date/Time   : 2017-02-13, 16:56, # CodeGen: 1
+**     Abstract    :
+**         This is user's event module.
+**         Put your event handler code here.
+**     Settings    :
+**     Contents    :
+**         serial_task - void serial_task(os_task_param_t task_init_data);
+**
+** ###################################################################*/
+/*!
+** @file os_tasks.c
+** @version 01.00
+** @brief
+**         This is user's event module.
+**         Put your event handler code here.
+*/         
+/*!
+**  @addtogroup os_tasks_module os_tasks module documentation
+**  @{
+*/         
+/* MODULE os_tasks */
+
+	/*  Special Characters Hex values:
+	 * 	  Ctrl + H: Erase character -> 0x8
+	 * 	  Ctrl + W: Erase previous word -> 0x17
+	 * 	  Ctrl + U: Erase Line   -> 0x15
+	 *    Enter: flush the buffer (putline) and do a line carriage and stuff ->  0xd
+	 *    */
+
+
+#include "Cpu.h"
+#include "Events.h"
+#include "rtos_main_task.h"
+#include "os_tasks.h"
+#include "access_functions.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif 
+
+/* User includes (#include below this line is not maintained by Processor Expert) */
+#include <message.h>
+#include <mqx.h>
+#include <bsp.h>
+#include <stddef.h>
+#include <string.h>
+
+/*
+** ===================================================================
+**     Callback    : serial_task
+**     Description : Task function entry.
+**     Parameters  :
+**       task_init_data - OS task parameter
+**     Returns : Nothing
+** ===================================================================
+*/
+
+void serial_task(os_task_param_t task_init_data)
+{
+	/*  Initialize Read
+	MUTEX_ATTR_STRUCT mutexattr;
+	 Initialize mutex attributes:
+	if (_mutatr_init(&mutexattr) != MQX_OK) {
+		printf("mutex init failed");
+		_mqx_exit(0);
+	}
+	if (_mutex_init(&readmutex,&mutexattr) != MQX_OK) {
+		printf("BAD");
+		_mqx_exit(0);
+	}  */
+
+    // Open an ISR message queue
+	handler_qid  = _msgq_open(HANDLER_QUEUE, 0);
+	if (handler_qid == 0) {
+	  printf("\nCould not open a handler message queue\n");
+	  _task_block();
+	}
+
+	/* create a message pool */
+   message_pool = _msgpool_create(sizeof(MESSAGE),
+	  10, 0, 0);
+   if (message_pool == MSGPOOL_NULL_POOL_ID) {
+	  printf("\nCould not create a handler message pool\n");
+	  _task_block();
+   }
+
+  /* Write your local variable definition here */
+  printf("serialTask Created!\r\n\r\n");
+
+/* Create putline Message Queue as Well! */
+  	putline_qid  = _msgq_open(PUTLINE_QUEUE, 0);
+  	if (putline_qid == 0) {
+  	  printf("\nCould not open a write message queue\n");
+  	  _task_block();
+  	}
+
+  // Write to debug console
+  sprintf(txBuf, "\n\rType here: ");
+
+  UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
+
+ while (1) {
+		OSA_TimeDelay(100);
+	// Receive a message from ISR
+	msg_ptr = _msgq_receive(handler_qid, 0);
+	if (msg_ptr == NULL) {
+	         printf("\nCould not receive an ISR message\n");
+	         _task_block();
+	}
+
+	// We only Read if a user has called OpenR
+	if (num_of_tasks == 0) {
+			/* free the message */
+			_msg_free(msg_ptr);
+			continue;
+	}
+
+	//Ctrl + H: Erase character
+	// TODO: remove the double erase bug
+	unsigned char new_char = msg_ptr->DATA[0];
+	printf("my new character: %c\n",new_char);
+	unsigned int first_null_char = strlen(handleBuf);
+	printf("my first null: %d \n", first_null_char);
+	if (new_char == 0x8) {
+		if (strlen(handleBuf) > 0) {
+			handleBuf[first_null_char-1] = '\0';
+			sprintf(msgBuf, "\b \b");
+			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+		}
+	}
+	// Ctrl + W: Erase previous word
+	else if (new_char == 0x17) {
+
+	}
+	//Ctrl + U: Erase Line
+	else if (new_char == 0x15) {
+		unsigned int i; int c;
+		for (i = first_null_char-1; i > 0; i--) {
+			if (handleBuf[i] == '\n') {handleBuf[i] = '\0'; break;}
+		}
+		unsigned int num_of_bees = first_null_char - i - 1;
+		printf("bees: %d\n", num_of_bees);
+		int j;
+		for (j = 0; j < num_of_bees*3; j+=3) {
+			msgBuf[j] = '\b';
+			msgBuf[j+1] = ' ';
+			msgBuf[j+2] = '\b';
+		}
+		msgBuf[j] = '\0';
+		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+	}
+	//Enter:
+	else if (new_char == 0xd) {
+		sprintf(msgBuf, "\n");
+		strcat(handleBuf, msgBuf);
+		sprintf(msgBuf, "\r\n");
+		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+	}
+	// any normal character
+	else {
+		sprintf(msgBuf, msg_ptr->DATA);
+		printf("msgBuf: %s\n", msg_ptr->DATA);
+		strcat(handleBuf, msgBuf);
+		printf("%s, %d", msgBuf ,sizeof(msgBuf));
+		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+	}
+	printf("buf: %s\n\n",handleBuf);
+
+	OSA_TimeDelay(100);
+ }
+}
+
+/*
+** ===================================================================
+**     Callback    : user_task
+**     Description : Task function entry.
+**     Parameters  :
+**       task_init_data - OS task parameter
+**     Returns : Nothing
+** ===================================================================
+*/
+void user_task(os_task_param_t task_init_data)
+{
+	// incr number of tasks
+	num_of_tasks++;
+	// Data declarations
+	_queue_id          	getline_qid; // For getline (when a user task reads)
+
+	// Open a getline message queue
+	getline_qid  = _msgq_open(GETLINE_QUEUE+num_of_tasks, 0);
+	if (getline_qid == 0) {
+	  printf("\nCould not open a Usertask getline message queue\n");
+	  _task_block();
+	}
+
+  //while (1) {
+
+    
+ // }
+}
+
+/* END os_tasks */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif 
+
+/*!
+** @}
+*/
+/*
+** ###################################################################
+**
+**     This file was created by Processor Expert 10.5 [05.21]
+**     for the Freescale Kinetis series of microcontrollers.
+**
+** ###################################################################
+*/
