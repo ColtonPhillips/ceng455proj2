@@ -85,7 +85,8 @@ Sources/os_tasks.o: ../Sources/os_tasks.c \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/stdio.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/std_prv.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fcntl.h \
- C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/nio.h
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/nio.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/mutex.h
 
 C:/project2/serial_echo/Generated_Code/Cpu.h:
 
@@ -264,3 +265,5 @@ C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/std_prv.h:
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fcntl.h:
 
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/nio.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/mutex.h:

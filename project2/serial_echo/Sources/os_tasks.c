@@ -27,6 +27,14 @@
 */         
 /* MODULE os_tasks */
 
+	/*  Special Characters Hex values:
+	 * 	  Ctrl + H: Erase character -> 0x8
+	 * 	  Ctrl + W: Erase previous word -> 0x17
+	 * 	  Ctrl + U: Erase Line   -> 0x15
+	 *    Enter: flush the buffer (putline) and do a line carriage and stuff ->  0xd
+	 *    */
+
+
 #include "Cpu.h"
 #include "Events.h"
 #include "rtos_main_task.h"
@@ -41,6 +49,8 @@ extern "C" {
 #include <message.h>
 #include <mqx.h>
 #include <bsp.h>
+#include <stddef.h>
+#include <string.h>
 
 /*
 ** ===================================================================
@@ -54,7 +64,19 @@ extern "C" {
 
 void serial_task(os_task_param_t task_init_data)
 {
-// Open an ISR message queue
+	/*  Initialize Read
+	MUTEX_ATTR_STRUCT mutexattr;
+	 Initialize mutex attributes:
+	if (_mutatr_init(&mutexattr) != MQX_OK) {
+		printf("mutex init failed");
+		_mqx_exit(0);
+	}
+	if (_mutex_init(&readmutex,&mutexattr) != MQX_OK) {
+		printf("BAD");
+		_mqx_exit(0);
+	}  */
+
+    // Open an ISR message queue
 	handler_qid  = _msgq_open(HANDLER_QUEUE, 0);
 	if (handler_qid == 0) {
 	  printf("\nCould not open a handler message queue\n");
@@ -63,8 +85,7 @@ void serial_task(os_task_param_t task_init_data)
 
 	/* create a message pool */
    message_pool = _msgpool_create(sizeof(MESSAGE),
-	  1, 0, 0);
-
+	  10, 0, 0);
    if (message_pool == MSGPOOL_NULL_POOL_ID) {
 	  printf("\nCould not create a handler message pool\n");
 	  _task_block();
@@ -86,6 +107,7 @@ void serial_task(os_task_param_t task_init_data)
   UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
 
  while (1) {
+		OSA_TimeDelay(100);
 	// Receive a message from ISR
 	msg_ptr = _msgq_receive(handler_qid, 0);
 	if (msg_ptr == NULL) {
@@ -93,25 +115,66 @@ void serial_task(os_task_param_t task_init_data)
 	         _task_block();
 	}
 
-	/*  Special Characters Hex values:
-	 * 	  Ctrl + H: Erase character -> 0x8
-	 * 	  Ctrl + W: Erase previous word -> 0x17
-	 * 	  Ctrl + U: Erase Line   -> 0x15
-	 *    Enter: flush the buffer (putline) and do a line carriage and stuff ->  0xd  */
+	// We only Read if a user has called OpenR
+	if (num_of_tasks == 0) {
+			/* free the message */
+			_msg_free(msg_ptr);
+			continue;
+	}
 
-	// (Filter) Handle Backspace, and other key codes
-	// Place into Buffer
-	sprintf(msgBuf, msg_ptr->DATA);
+	//Ctrl + H: Erase character
+	// TODO: remove the double erase bug
+	unsigned char new_char = msg_ptr->DATA[0];
+	printf("my new character: %c\n",new_char);
+	unsigned int first_null_char = strlen(handleBuf);
+	printf("my first null: %d \n", first_null_char);
+	if (new_char == 0x8) {
+		if (strlen(handleBuf) > 0) {
+			handleBuf[first_null_char-1] = '\0';
+			sprintf(msgBuf, "\b \b");
+			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+		}
+	}
+	// Ctrl + W: Erase previous word
+	else if (new_char == 0x17) {
 
-	// if no user tasks, Send characters to null device (do nothing)
-	UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
-	printf("%x",msgBuf[0]);
+	}
+	//Ctrl + U: Erase Line
+	else if (new_char == 0x15) {
+		unsigned int i; int c;
+		for (i = first_null_char-1; i > 0; i--) {
+			if (handleBuf[i] == '\n') {handleBuf[i] = '\0'; break;}
+		}
+		unsigned int num_of_bees = first_null_char - i - 1;
+		printf("bees: %d\n", num_of_bees);
+		int j;
+		for (j = 0; j < num_of_bees*3; j+=3) {
+			msgBuf[j] = '\b';
+			msgBuf[j+1] = ' ';
+			msgBuf[j+2] = '\b';
+		}
+		msgBuf[j] = '\0';
+		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+	}
+	//Enter:
+	else if (new_char == 0xd) {
+		sprintf(msgBuf, "\n");
+		strcat(handleBuf, msgBuf);
+		sprintf(msgBuf, "\r\n");
+		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+	}
+	// any normal character
+	else {
+		sprintf(msgBuf, msg_ptr->DATA);
+		printf("msgBuf: %s\n", msg_ptr->DATA);
+		strcat(handleBuf, msgBuf);
+		printf("%s, %d", msgBuf ,sizeof(msgBuf));
+		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+	}
+	printf("buf: %s\n\n",handleBuf);
 
-	/* free the message */
-	_msg_free(msg_ptr);
-
+	OSA_TimeDelay(100);
  }
-
 }
 
 /*
@@ -137,20 +200,10 @@ void user_task(os_task_param_t task_init_data)
 	  _task_block();
 	}
 
-#ifdef PEX_USE_RTOS
-  while (1) {
-#endif
-    /* Write your code here ... */
+  //while (1) {
+
     
-    
-   // OSA_TimeDelay(10);                 /* Example code (for task release) */
-   
-    
-    
-    
-#ifdef PEX_USE_RTOS   
-  }
-#endif    
+ // }
 }
 
 /* END os_tasks */

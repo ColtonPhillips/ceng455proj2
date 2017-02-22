@@ -254,6 +254,7 @@
       <PathName>C:\project2\serial_echo\SDK\rtos\mqx\mqx_stdlib\source\stdio\stdio.c</PathName>
       <PathName>C:\project2\serial_echo\SDK\rtos\mqx\mqx_stdlib\source\strings\strings.c</PathName>
       <PathName>C:\project2\serial_echo\Sources\Events.c</PathName>
+      <PathName>C:\project2\serial_echo\Sources\access_functions.c</PathName>
       <PathName>C:\project2\serial_echo\Sources\main.c</PathName>
       <PathName>C:\project2\serial_echo\Sources\os_tasks.c</PathName>
       <PathName>C:\project2\serial_echo\Sources\rtos_main_task.c</PathName>
@@ -404,6 +405,7 @@
       <PathName>C:\project2\serial_echo\SDK\rtos\mqx\mqx_stdlib\source\stdio\print_prv.h</PathName>
       <PathName>C:\project2\serial_echo\SDK\rtos\mqx\mqx_stdlib\source\stdio\scan_prv.h</PathName>
       <PathName>C:\project2\serial_echo\Sources\Events.h</PathName>
+      <PathName>C:\project2\serial_echo\Sources\access_functions.h</PathName>
       <PathName>C:\project2\serial_echo\Sources\os_tasks.h</PathName>
       <PathName>C:\project2\serial_echo\Sources\rtos_main_task.h</PathName>
     </GeneratedHs>

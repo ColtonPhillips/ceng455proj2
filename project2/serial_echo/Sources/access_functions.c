@@ -11,6 +11,7 @@
 // Returns True if a read spot was available
 // Returns false if
 bool OpenR(_queue_id stream_no){
+
 	if (OpenRStatus == false) {
 		OpenRStatus = true;
 		read_queue = stream_no;
@@ -19,6 +20,7 @@ bool OpenR(_queue_id stream_no){
 	else {
 		return false;
 	}
+	//
 }
 
 // User Task actually gets data from serial channel

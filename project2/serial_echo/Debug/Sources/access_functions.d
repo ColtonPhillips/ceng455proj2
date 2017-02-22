@@ -61,6 +61,7 @@ Sources/access_functions.o: ../Sources/access_functions.c \
  C:/project2/serial_echo/Generated_Code/board.h \
  C:/project2/serial_echo/Generated_Code/pin_init.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/mutex.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h
 
 ../Sources/access_functions.h:
@@ -186,5 +187,7 @@ C:/project2/serial_echo/Generated_Code/board.h:
 C:/project2/serial_echo/Generated_Code/pin_init.h:
 
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/mutex.h:
 
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h:

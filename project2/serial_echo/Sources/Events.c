@@ -69,8 +69,10 @@ void myUART_RxCallback(uint32_t instance, void * uartState)
 	 msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, HANDLER_QUEUE);
 	 msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
 		 strlen((char *)msg_ptr->DATA) + 1;
-	  msg_ptr->DATA[0]= myRxBuff[0];
-	  msg_ptr->DATA[1]= '\0';
+	 sprintf(msg_ptr->DATA , myRxBuff);
+
+//	 msg_ptr->DATA[0]= myRxBuff[0];
+	//  msg_ptr->DATA[1]= '\0';
 
 	  // Send the message
 	  if (!_msgq_send(msg_ptr)) {

@@ -11,7 +11,9 @@
 #include <stdio.h>
 #include <mqx.h>
 #include <bsp.h>
+#include <mutex.h>
 #include <message.h>
+//#include "os_tasks.c"
 
 // TODO: Mutex/Sem the data structures to prevent race conditions
 

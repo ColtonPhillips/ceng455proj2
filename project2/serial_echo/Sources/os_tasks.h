@@ -52,10 +52,13 @@ extern "C" {
 #include <message.h>
 #include <mqx.h>
 #include <bsp.h>
+//#include <mutex.h>
 
 #define HANDLER_QUEUE 8
 #define PUTLINE_QUEUE 9
 #define GETLINE_QUEUE 10
+
+#define BUFFER_SIZE 1024
 
 // this struct is also used for putline and getline
 typedef struct my_messsage
@@ -71,10 +74,17 @@ _queue_id          	putline_qid; // For putline (when a user task writes)
 _pool_id   			message_pool;
 
 // Message Buffer(s)
-unsigned char msgBuf[100];
-unsigned char txBuf[16];
+unsigned char msgBuf[BUFFER_SIZE];
+unsigned char txBuf[BUFFER_SIZE];
 
+// The characters that are typed in, and edited with special keywords
+unsigned char handleBuf[BUFFER_SIZE] = "";
+
+// Number of User Tasks
 static int num_of_tasks = 0;
+
+//MUTEX_STRUCT readmutex;
+//MUTEX_ATTR_STRUCT mutexattr;
 
 // TODO: mutex the num_of_tasks to prevent race cond.
 //
