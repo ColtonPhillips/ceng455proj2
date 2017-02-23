@@ -58,21 +58,21 @@ extern "C" {
 void myUART_RxCallback(uint32_t instance, void * uartState)
 {
 	// Allocate a message
-	 msg_ptr = (MESSAGE_PTR)_msg_alloc(message_pool);
-	 if (msg_ptr == NULL) {
+	MESSAGE_PTR ISR_msg_ptr = (MESSAGE_PTR)_msg_alloc(message_pool);
+	 if (ISR_msg_ptr == NULL) {
 		 printf("\nCould not allocate a message\n");
 		 _task_block();
 	  }
 
 	 // Populate a message
-	 msg_ptr->HEADER.SOURCE_QID = 0;
-	 msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, HANDLER_QUEUE);
-	 msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
-		 strlen((char *)msg_ptr->DATA) + 1;
+	 ISR_msg_ptr->HEADER.SOURCE_QID = 0;
+	 ISR_msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, HANDLER_QUEUE);
+	 ISR_msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
+		 strlen((char *)ISR_msg_ptr->DATA) + 1;
 
-	 strcpy(msg_ptr->DATA, myRxBuff);
+	 strcpy(ISR_msg_ptr->DATA, myRxBuff);
 	  // Send the message
-	  if (!_msgq_send(msg_ptr)) {
+	  if (!_msgq_send(ISR_msg_ptr)) {
 	  	 printf("\nCould not send a message\n");
 	  	 _task_block();
 	  }

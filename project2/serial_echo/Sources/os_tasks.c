@@ -46,17 +46,16 @@ extern "C" {
 #include <string.h>
 
 void init () {
-	/*  Initialize Read
-	MUTEX_ATTR_STRUCT mutexattr;
-	 Initialize mutex attributes:
+	 // Initialize Read
+	 //Initialize mutex attributes:
 	if (_mutatr_init(&mutexattr) != MQX_OK) {
 		printf("mutex init failed");
 		_mqx_exit(0);
 	}
-	if (_mutex_init(&readmutex,&mutexattr) != MQX_OK) {
+	if (_mutex_init(&accessmutex,&mutexattr) != MQX_OK) {
 		printf("BAD");
 		_mqx_exit(0);
-	}  */
+	}
 
     // Open an ISR message queue
 	handler_qid  = _msgq_open(HANDLER_QUEUE, 0);
@@ -83,7 +82,8 @@ void init () {
 
 void serial_send(char * str) {
 	 strcpy(txBuf,str);
-	 UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
+	 UART_DRV_SendData(myUART_IDX, txBuf, strlen(txBuf));
+	 printf("sizeof: %d\n",strlen(txBuf));
 }
 
 // Handler starts here:
@@ -121,8 +121,9 @@ void serial_task(os_task_param_t task_init_data)
 		if (new_char == 0x8) {
 			if (strlen(handleBuf) > 0) {
 				handleBuf[first_null_char-1] = '\0';
-				strcpy(msgBuf, "\b \b");
-				UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+				serial_send("\b \b");
+				//strcpy(msgBuf, "\b \b");
+				//UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 			}
 		}
 		// Ctrl + W: Erase previous word
@@ -132,10 +133,10 @@ void serial_task(os_task_param_t task_init_data)
 		//Ctrl + U: Erase Line
 		else if (new_char == 0x15) {
 			unsigned int i;
-			for (i = first_null_char-1; i > 0; i--) {
-				if (handleBuf[i] == '\n') {handleBuf[i] = '\0'; break;}
-			}
-			unsigned int num_of_bees = first_null_char - i - 1;
+			//for (i = first_null_char-1; i > 0; i--) {
+			//	if (handleBuf[i] == '\n') {handleBuf[i] = '\0'; break;}
+			//}
+			unsigned int num_of_bees = first_null_char;
 			printf("bees: %d\n", num_of_bees);
 			int j;
 			for (j = 0; j < num_of_bees*3; j+=3) {
@@ -144,7 +145,10 @@ void serial_task(os_task_param_t task_init_data)
 				msgBuf[j+2] = '\b';
 			}
 			msgBuf[j] = '\0';
-			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+			UART_DRV_SendData(myUART_IDX, msgBuf, strlen(msgBuf));
+
+			// empty buffer
+			strcpy(handleBuf,"");
 		}
 		//Enter:
 		else if (new_char == 0xd) {
@@ -171,6 +175,9 @@ void serial_task(os_task_param_t task_init_data)
 					  	 _task_block();
 					}
 					traverse = traverse->next;
+
+					// empty buffer
+					strcpy(handleBuf,"");
 				}
 			}
 			else {}
@@ -180,10 +187,11 @@ void serial_task(os_task_param_t task_init_data)
 		}
 		// any normal character a-z and numbers, <,.; etc
 		else if (new_char >= 0x20 && new_char <= 0x7E ){
-			//serial_send(msg_ptr->DATA);
+			serial_send(msg_ptr->DATA);
 			strcpy(msgBuf, msg_ptr->DATA);
 			strcat(handleBuf, msgBuf);
-			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+
+			//UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 		}
 		// throw all other characters away
 		else {}

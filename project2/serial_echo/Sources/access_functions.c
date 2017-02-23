@@ -156,7 +156,7 @@ void print_list(node_ptr head) {
 // Returns True if a read spot was available
 // Returns false if
 bool OpenR(_queue_id stream_no){
-
+//
 	if (OpenRStatus == false) {
 		OpenRStatus = true;
 		if (count(read_head) == 0) {
@@ -169,6 +169,7 @@ bool OpenR(_queue_id stream_no){
 	else {
 		return false;
 	}
+//
 }
 
 

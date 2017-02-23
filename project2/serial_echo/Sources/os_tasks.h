@@ -52,7 +52,7 @@ extern "C" {
 #include <message.h>
 #include <mqx.h>
 #include <bsp.h>
-//#include <mutex.h>
+#include <mutex.h>
 #include "access_functions.h"
 
 #define HANDLER_QUEUE 8
@@ -84,9 +84,8 @@ unsigned char handleBuf[BUFFER_SIZE] = "";
 // Number of User Tasks
 static int num_of_tasks = 0;
 
-//MUTEX_STRUCT readmutex;
-//MUTEX_ATTR_STRUCT mutexattr;
-
+MUTEX_STRUCT accessmutex;
+MUTEX_ATTR_STRUCT mutexattr;
 
 /*
 ** ===================================================================

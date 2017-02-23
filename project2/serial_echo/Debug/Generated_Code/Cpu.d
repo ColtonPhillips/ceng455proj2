@@ -82,6 +82,7 @@ Generated_Code/Cpu.o: ../Generated_Code/Cpu.c ../Generated_Code/Cpu.h \
  C:/project2/serial_echo/Generated_Code/board.h \
  C:/project2/serial_echo/Generated_Code/pin_init.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h \
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/mutex.h \
  C:/project2/serial_echo/Sources/access_functions.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/stdio.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/std_prv.h \
@@ -258,6 +259,8 @@ C:/project2/serial_echo/Generated_Code/board.h:
 C:/project2/serial_echo/Generated_Code/pin_init.h:
 
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h:
+
+C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/mutex.h:
 
 C:/project2/serial_echo/Sources/access_functions.h:
 

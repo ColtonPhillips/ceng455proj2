@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <mqx.h>
 #include <bsp.h>
-//#include <mutex.h>
+#include <mutex.h>
 #include <message.h>
 #include "os_tasks.h"
 
