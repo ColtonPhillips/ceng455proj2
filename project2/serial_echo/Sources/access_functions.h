@@ -13,11 +13,11 @@
 #include <bsp.h>
 //#include <mutex.h>
 #include <message.h>
-//#include "os_tasks.c"
+#include "os_tasks.h"
 
 // TODO: Mutex/Sem the data structures to prevent race conditions
 
-// Linked List
+// Linked List stores our readqueue
 typedef struct mynode {
 	_queue_id data;
 	struct node* next;
@@ -31,10 +31,11 @@ node_ptr search(node_ptr head,_queue_id data);
 node_ptr remove_front(node_ptr head);
 node_ptr remove_back(node_ptr head);
 node_ptr remove_any(node_ptr head,node_ptr nd);
+void print_list(node_ptr head);
 
 // Access Memory
 bool OpenRStatus = false; // whether someone has access to R or W
-bool getlineStatus = false;
+bool getlineStatus = false; // whether getline is called
 bool OpenWStatus = false;
 node_ptr  read_head;
 

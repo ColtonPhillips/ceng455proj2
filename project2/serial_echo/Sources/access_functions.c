@@ -6,10 +6,9 @@
  */
 
 #include "access_functions.h"
-
+//http://www.zentut.com/c-tutorial/c-linked-list/#Search_for_a_node
 node_ptr create(_queue_id data ,node_ptr next)
 {
-	//node_ptr new_node = (node*)malloc(sizeof(node));
 	node_ptr new_node = _mem_alloc(sizeof(node));
     if(new_node == NULL)
     {
@@ -87,7 +86,6 @@ node_ptr remove_back(node_ptr head)
     if(cursor == head)
         head = NULL;
 
-    //free(cursor);
     _mem_free(cursor);
 
     return head;
@@ -97,6 +95,7 @@ node_ptr remove_front(node_ptr head)
 {
     if(head == NULL)
         return NULL;
+
     node_ptr front = head;
     head = head->next;
     front->next = NULL;
@@ -104,7 +103,6 @@ node_ptr remove_front(node_ptr head)
     if(front == head)
         head = NULL;
     _mem_free(front);
-//    free(front);
     return head;
 }
 
@@ -138,12 +136,21 @@ node_ptr remove_any(node_ptr head,node_ptr nd)
         node* tmp = cursor->next;
         cursor->next = tmp->next;
         tmp->next = NULL;
-       // free(tmp);
         _mem_free(tmp);
     }
     return head;
 }
 
+// Nice function!
+void print_list(node_ptr head) {
+	node_ptr trav = head;
+	int c = 0;
+	while (trav != NULL) {
+		printf("Count:%d, Item: %d, Qid:%d, Next:%d\n",c,trav,trav->data, trav->next);
+		trav = trav->next;
+		c++;
+	}
+}
 
 // User Tasks access serial channel for reading
 // Returns True if a read spot was available
@@ -152,7 +159,10 @@ bool OpenR(_queue_id stream_no){
 
 	if (OpenRStatus == false) {
 		OpenRStatus = true;
-		if (count(read_head) == 0) { read_head = create(stream_no, read_head);}
+		if (count(read_head) == 0) {
+			read_head = create(stream_no, NULL);}
+			if (read_head->next == NULL) {
+			}
 		else {read_head = append(read_head,stream_no);}
 		return true;
 	}
@@ -161,12 +171,23 @@ bool OpenR(_queue_id stream_no){
 	}
 }
 
+
+// blocking function
 // User Task actually gets data from serial channel
 bool _getline(char * string, _queue_id qid){ // every task has a unique Q id
-	//if (getlineStatus == false) {
-		//getlineStatus = true;
-		//return
-	//}
+	node_ptr caller = search(read_head,qid);
+	if (caller == NULL) {return false;} // no read priviledge
+	getlineStatus = true;
+
+	MESSAGE_PTR get_msg_ptr = _msgq_receive(qid, 0);
+			if (get_msg_ptr == NULL) {
+					 printf("\nCould not receive an ISR message\n");
+					 return false;
+			}
+	strcpy(string,get_msg_ptr->DATA);
+	_msg_free(get_msg_ptr);
+	return true;
+
 }
 // Access serial channel for writing
 // Returns true if a write spot was available , else false
@@ -189,8 +210,18 @@ bool Close(_queue_id qid) {
 	node_ptr to_delete = search(read_head,qid);
 	if (to_delete == NULL) {return false;}
 	else {
-		remove_any(read_head,to_delete);
-		if (count(read_head) == 0) {OpenRStatus = false;}
+
+		if (count(read_head) <= 1) {
+			printf("count is now:%d\n",count(read_head));
+			OpenRStatus = false;
+			getlineStatus = false;
+			OpenWStatus = false;
+		}
+		print_list(read_head);
+		read_head = remove_any(read_head,to_delete);
+		print_list(read_head);
+
+		printf("count is now:%d\n",count(read_head));
+		return true;
 	}
-	return true;
 }

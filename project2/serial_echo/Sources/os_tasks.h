@@ -53,6 +53,7 @@ extern "C" {
 #include <mqx.h>
 #include <bsp.h>
 //#include <mutex.h>
+#include "access_functions.h"
 
 #define HANDLER_QUEUE 8
 #define PUTLINE_QUEUE 9
@@ -67,7 +68,7 @@ typedef struct my_messsage
 	unsigned char DATA[64];
 } MESSAGE, * MESSAGE_PTR;
 
-MESSAGE_PTR msg_ptr;
+MESSAGE_PTR msg_ptr; // ISR message
 _queue_id          	handler_qid; // For the isr
 _queue_id          	putline_qid; // For putline (when a user task writes)
 
@@ -86,8 +87,6 @@ static int num_of_tasks = 0;
 //MUTEX_STRUCT readmutex;
 //MUTEX_ATTR_STRUCT mutexattr;
 
-// TODO: mutex the num_of_tasks to prevent race cond.
-//
 
 /*
 ** ===================================================================

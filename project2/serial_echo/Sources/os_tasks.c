@@ -99,7 +99,7 @@ void serial_task(os_task_param_t task_init_data)
 	//  UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 
     while (1) {
-		OSA_TimeDelay(100);
+
 		// Receive a message from ISR
 		msg_ptr = _msgq_receive(handler_qid, 0);
 		if (msg_ptr == NULL) {
@@ -148,9 +148,33 @@ void serial_task(os_task_param_t task_init_data)
 		}
 		//Enter:
 		else if (new_char == 0xd) {
-			strcpy(msgBuf,"\n");
-			strcat(handleBuf, msgBuf); // call getline
-			//serial_send("\r\n");
+			// if getline is set, send a message!
+			if (getlineStatus) {
+				node_ptr traverse = read_head;
+				// for each reading task:
+				while (traverse != NULL) {
+					// Allocate a msg
+					MESSAGE_PTR getline_msg_ptr = (MESSAGE_PTR)_msg_alloc(message_pool);
+					if (getline_msg_ptr == NULL) {
+						printf("\nCould not allocate a message\n");
+						_task_block();
+					}
+					// Populate a message
+					getline_msg_ptr->HEADER.SOURCE_QID = 0;
+					getline_msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, traverse->data);
+					getline_msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
+						 strlen((char *)getline_msg_ptr->DATA) + 1;
+					strcpy(getline_msg_ptr->DATA, handleBuf);
+					// Send the message
+					if (!_msgq_send(getline_msg_ptr)) {
+					  	 printf("\nCould not send a message\n");
+					  	 _task_block();
+					}
+					traverse = traverse->next;
+				}
+			}
+			else {}
+			// move the cursor
 			strcpy(msgBuf,"\r\n");
 			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 		}
@@ -162,17 +186,15 @@ void serial_task(os_task_param_t task_init_data)
 			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 		}
 		// throw all other characters away
-		else {
-		}
+		else {}
 
 		_msg_free(msg_ptr);
 
 		printf("my first null: %d \n", first_null_char);
 		printf("my new character: %c\n",new_char);
-		printf("buf: %s\n\n",handleBuf);
 		printf("msgBuf: %s\n", msg_ptr->DATA);
-		printf("%s, %d", msgBuf ,sizeof(msgBuf));
-
+		printf("%s, %d\n", msgBuf ,sizeof(msgBuf));
+		printf("buf: %s\n\n",handleBuf);
  	 } // while end
 }
 
@@ -200,7 +222,15 @@ void user_task(os_task_param_t task_init_data)
 	  _task_block();
 	}
 
-	OpenR(getline_qid);
+	bool v = OpenR(getline_qid);
+	printf("User %d calls OpenR and it returns: %d\n",getline_qid,v);
+	char out[BUFFER_SIZE];
+	v = _getline(out,getline_qid);
+	printf("User %d calls _getline and it returns: %d\n",getline_qid,v);
+	printf("User %d's string is now: %s\n",getline_qid,out);
+	//v = Close(getline_qid);
+	//printf("User %d calls Close and it returns: %d\n",getline_qid,v);
+	//printf("User %d terminates\n\n",getline_qid);
   //while (1) {
     
  // }

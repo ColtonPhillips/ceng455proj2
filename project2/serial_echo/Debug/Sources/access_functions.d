@@ -61,7 +61,29 @@ Sources/access_functions.o: ../Sources/access_functions.c \
  C:/project2/serial_echo/Generated_Code/board.h \
  C:/project2/serial_echo/Generated_Code/pin_init.h \
  C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h \
- C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h
+ C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h \
+ ../Sources/os_tasks.h C:/project2/serial_echo/Generated_Code/clockMan1.h \
+ C:/project2/serial_echo/Generated_Code/osa1.h \
+ C:/project2/serial_echo/Generated_Code/mqx_ksdk.h \
+ C:/project2/serial_echo/Generated_Code/Cpu.h \
+ C:/project2/serial_echo/SDK/platform/hal/inc/fsl_rtc_hal.h \
+ C:/project2/serial_echo/SDK/platform/hal/inc/fsl_port_hal.h \
+ C:/project2/serial_echo/SDK/platform/system/inc/fsl_interrupt_manager.h \
+ C:/project2/serial_echo/SDK/platform/hal/inc/fsl_uart_hal.h \
+ C:/project2/serial_echo/SDK/platform/drivers/inc/fsl_uart_driver.h \
+ C:/project2/serial_echo/SDK/platform/hal/inc/fsl_mpu_hal.h \
+ C:/project2/serial_echo/SDK/platform/drivers/inc/fsl_mpu_driver.h \
+ C:/project2/serial_echo/Generated_Code/pin_init.h \
+ C:/project2/serial_echo/Generated_Code/osa1.h \
+ C:/project2/serial_echo/Generated_Code/mqx_ksdk.h \
+ C:/project2/serial_echo/Generated_Code/uart1.h \
+ C:/project2/serial_echo/Generated_Code/clockMan1.h \
+ C:/project2/serial_echo/Generated_Code/fsl_mpu1.h \
+ C:/project2/serial_echo/Generated_Code/fsl_hwtimer1.h \
+ C:/project2/serial_echo/Generated_Code/MainTask.h \
+ C:/project2/serial_echo/Generated_Code/SerialTask.h \
+ C:/project2/serial_echo/Generated_Code/myUART.h \
+ C:/project2/serial_echo/Generated_Code/UserTask.h
 
 ../Sources/access_functions.h:
 
@@ -188,3 +210,49 @@ C:/project2/serial_echo/Generated_Code/pin_init.h:
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp/bsp_config.h:
 
 C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include/message.h:
+
+../Sources/os_tasks.h:
+
+C:/project2/serial_echo/Generated_Code/clockMan1.h:
+
+C:/project2/serial_echo/Generated_Code/osa1.h:
+
+C:/project2/serial_echo/Generated_Code/mqx_ksdk.h:
+
+C:/project2/serial_echo/Generated_Code/Cpu.h:
+
+C:/project2/serial_echo/SDK/platform/hal/inc/fsl_rtc_hal.h:
+
+C:/project2/serial_echo/SDK/platform/hal/inc/fsl_port_hal.h:
+
+C:/project2/serial_echo/SDK/platform/system/inc/fsl_interrupt_manager.h:
+
+C:/project2/serial_echo/SDK/platform/hal/inc/fsl_uart_hal.h:
+
+C:/project2/serial_echo/SDK/platform/drivers/inc/fsl_uart_driver.h:
+
+C:/project2/serial_echo/SDK/platform/hal/inc/fsl_mpu_hal.h:
+
+C:/project2/serial_echo/SDK/platform/drivers/inc/fsl_mpu_driver.h:
+
+C:/project2/serial_echo/Generated_Code/pin_init.h:
+
+C:/project2/serial_echo/Generated_Code/osa1.h:
+
+C:/project2/serial_echo/Generated_Code/mqx_ksdk.h:
+
+C:/project2/serial_echo/Generated_Code/uart1.h:
+
+C:/project2/serial_echo/Generated_Code/clockMan1.h:
+
+C:/project2/serial_echo/Generated_Code/fsl_mpu1.h:
+
+C:/project2/serial_echo/Generated_Code/fsl_hwtimer1.h:
+
+C:/project2/serial_echo/Generated_Code/MainTask.h:
+
+C:/project2/serial_echo/Generated_Code/SerialTask.h:
+
+C:/project2/serial_echo/Generated_Code/myUART.h:
+
+C:/project2/serial_echo/Generated_Code/UserTask.h:

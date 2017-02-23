@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="sprintf" key="selection"/>
+		<item value="NULL" key="selection"/>
 		<list key="findhistory">
-			<item value="sprintf"/>
+			<item value="NULL"/>
 			<item value="Type"/>
+			<item value="asdf"/>
+			<item value="asfd"/>
+			<item value="send a messsage"/>
+			<item value="sprintf"/>
 			<item value="free"/>
 			<item value="alloc"/>
-			<item value="read_queue"/>
-			<item value="POOLS"/>
-			<item value="OUT_OF_PO"/>
-			<item value="MSGPOOL_OUT_OF_POOLS"/>
 		</list>
 		<list key="replacehistory">
 		</list>
