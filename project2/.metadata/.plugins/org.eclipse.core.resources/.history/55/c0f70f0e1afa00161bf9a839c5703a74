@@ -1,0 +1,54 @@
+/*
+ * access_functions.h
+ *
+ *  Created on: Feb 16, 2017
+ *      Author: coltonp
+ */
+
+#ifndef SOURCES_ACCESS_FUNCTIONS_H_
+#define SOURCES_ACCESS_FUNCTIONS_H_
+
+#include <stdio.h>
+#include <mqx.h>
+#include <bsp.h>
+#include <mutex.h>
+#include <message.h>
+#include "os_tasks.h"
+
+// A Linked List stores our readqueue
+typedef struct mynode {
+	_queue_id data;
+	struct node* next;
+} node, * node_ptr;
+
+// Linked list functions
+node_ptr create (_queue_id data, node_ptr next);
+node_ptr prepend(node_ptr head,_queue_id data); // not used.
+unsigned int count(node_ptr head);
+node_ptr append(node_ptr head, _queue_id data);
+node_ptr search(node_ptr head,_queue_id data);
+node_ptr remove_front(node_ptr head);
+node_ptr remove_back(node_ptr head);
+node_ptr remove_any(node_ptr head,node_ptr nd);
+
+// Handy functions
+void print_list(node_ptr head);
+void lock();
+void lock();
+
+// Access Memory (mutex resources)
+bool OpenRStatus = false; 	// whether someone has access to R
+bool getlineStatus = false; // whether getline is called
+bool OpenWStatus = false;	// Whether someone has access to W
+_queue_id openWqid = 0;	// The User task who opened to W
+bool putlineStatus = false;	// Whether putline has been called
+node_ptr  read_head;		// the linked list of reading user tasks (qids)
+
+// Access functions
+bool OpenR(_queue_id qid);
+bool _getline(char * string, _queue_id qid);
+_queue_id OpenW(_queue_id qid);
+bool _putline(char * string);
+bool Close(_queue_id qid);
+
+#endif /* SOURCES_ACCESS_FUNCTIONS_H_ */

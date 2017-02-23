@@ -7,6 +7,7 @@
 
 #include "access_functions.h"
 //http://www.zentut.com/c-tutorial/c-linked-list/#Search_for_a_node
+// Linked List Functions:
 node_ptr create(_queue_id data ,node_ptr next)
 {
 	node_ptr new_node = _mem_alloc(sizeof(node));
@@ -19,13 +20,6 @@ node_ptr create(_queue_id data ,node_ptr next)
     new_node->next = next;
 
     return new_node;
-}
-
-node_ptr prepend(node_ptr head,_queue_id data)
-{
-    node_ptr new_node = create(data,head);
-    head = new_node;
-    return head;
 }
 
 unsigned int count(node_ptr head)
@@ -141,7 +135,7 @@ node_ptr remove_any(node_ptr head,node_ptr nd)
     return head;
 }
 
-// Nice function!
+// Handy function to print a linked list
 void print_list(node_ptr head) {
 	node_ptr trav = head;
 	int c = 0;
@@ -152,77 +146,155 @@ void print_list(node_ptr head) {
 	}
 }
 
-// User Tasks access serial channel for reading
-// Returns True if a read spot was available
-// Returns false if
-bool OpenR(_queue_id stream_no){
-//
-	if (OpenRStatus == false) {
-		OpenRStatus = true;
-		if (count(read_head) == 0) {
-			read_head = create(stream_no, NULL);}
-			if (read_head->next == NULL) {
-			}
-		else {read_head = append(read_head,stream_no);}
-		return true;
+// handy functions for mutex locking/unlocking
+void lock() {
+	if (_mutex_lock(&accessmutex) != MQX_OK) {
+		printf("Mutex failed to lock.\n");
+		_mqx_exit(0);
 	}
-	else {
-		return false;
+}
+void unlock() {
+	if (_mutex_unlock(&accessmutex) != MQX_OK) {
+		printf("Mutex failed to unlock.\n");
+		_mqx_exit(0);
 	}
-//
 }
 
-
-// blocking function
-// User Task actually gets data from serial channel
-bool _getline(char * string, _queue_id qid){ // every task has a unique Q id
+// 1 to many User Tasks access serial channel for reading chars
+bool OpenR(_queue_id qid){
+	lock();
+	OpenRStatus = true;
+	// Is it already in the Reader linked list
 	node_ptr caller = search(read_head,qid);
-	if (caller == NULL) {return false;} // no read priviledge
+	if (caller != NULL) {
+		// If it's already there, return false
+		unlock();
+		return false;
+	}
+	// Put qid in the read List
+	else {
+		// Call 'create' if linked list is empty, or 'append' if not
+		if (count(read_head) == 0) {
+			read_head = create(qid, NULL);
+		}
+		else {
+			read_head = append(read_head,qid);
+		}
+		unlock();
+		return true;
+	}
+}
+// Blocking function receives message from handler of whole buffer
+bool _getline(char * string, _queue_id qid){
+	lock();
+	node_ptr caller = search(read_head,qid);
+	if (caller == NULL) {
+		// user task doesn't have privilege
+		unlock();
+		return false;
+	}
+	// Allows handler to check it! :)
 	getlineStatus = true;
+	unlock();
 
+
+	//Block for message
 	MESSAGE_PTR get_msg_ptr = _msgq_receive(qid, 0);
-			if (get_msg_ptr == NULL) {
-					 printf("\nCould not receive an ISR message\n");
-					 return false;
-			}
+	if (get_msg_ptr == NULL) {
+		lock();
+		printf("\nCould not receive a getline message\n");
+		getlineStatus = false;
+		unlock();
+		return false;
+	}
+	lock();
+	// User task gets the string and frees it, sets status to false
 	strcpy(string,get_msg_ptr->DATA);
 	_msg_free(get_msg_ptr);
+	getlineStatus = false;
+	unlock();
 	return true;
-
 }
-// Access serial channel for writing
-// Returns true if a write spot was available , else false
-_queue_id OpenW(){
+// Only 1 task can OpenW at a time
+_queue_id OpenW(_queue_id qid){
+	lock();
+	// If a task isn't using W, let them
 	if (OpenWStatus == false) {
+		openWqid = qid; // set who has the W priv.
 		OpenWStatus = true;
+		unlock();
 		return true;
-		}
+	}
+	// W access is already taken
 	else {
+		unlock();
 		return false;
 	}
 }
-// Actually put a string onto the serial channel
-_queue_id _putline(_queue_id qid, char * string){
-	return 1;
+// If user task has called OpenW it can send a message to handler
+bool _putline(_queue_id qid, char * string){
+	lock();
+	// If the task has no priveledge to write, return false
+	if (openWqid != qid) {
+		unlock();
+		return false;
+	}
+	// Allocate a message
+	MESSAGE_PTR Putline_msg_ptr = (MESSAGE_PTR)_msg_alloc(message_pool);
+	if (Putline_msg_ptr == NULL) {
+	 printf("\nCould not allocate a message\n");
+	 unlock();
+	 _task_block();
+	}
+	// Populate a message
+	Putline_msg_ptr->HEADER.SOURCE_QID = 0;
+	Putline_msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, PUTLINE_QUEUE);
+	Putline_msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
+			strlen((char *)Putline_msg_ptr->DATA) + 1;
+	strcpy(Putline_msg_ptr->DATA, string);
+
+	putlineStatus = true;
+
+	// Send the message
+	if (!_msgq_send(Putline_msg_ptr)) {
+		printf("\nCould not send a message\n");
+		unlock();
+		_task_block();
+	}
+	unlock();
+	return true;
 }
 
 // Revoke read and/or write priveledges
 bool Close(_queue_id qid) {
+	lock();
 	node_ptr to_delete = search(read_head,qid);
-	if (to_delete == NULL) {return false;}
+	// It's NOT in the Read list
+	if (to_delete == NULL) {
+		// But, Maybe we're trying to delete the writing task
+		if (qid == openWqid) {
+			openWqid = 0;
+			putlineStatus = false;
+			OpenWStatus = false;
+			unlock();
+			return true;
+		}
+		// It's NOT in the read_head Linked List OR the openWqid
+		else {
+			unlock();
+			return false;
+		}
+	}
+	// It IS in the read list
 	else {
-
-		if (count(read_head) <= 1) {
-			printf("count is now:%d\n",count(read_head));
+		// remove it
+		read_head = remove_any(read_head,to_delete);
+		// Close R if its totally empty
+		if (count(read_head) <= 0) {
 			OpenRStatus = false;
 			getlineStatus = false;
-			OpenWStatus = false;
 		}
-		print_list(read_head);
-		read_head = remove_any(read_head,to_delete);
-		print_list(read_head);
-
-		printf("count is now:%d\n",count(read_head));
+		unlock();
 		return true;
 	}
 }

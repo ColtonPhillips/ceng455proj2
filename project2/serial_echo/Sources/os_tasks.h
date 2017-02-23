@@ -61,7 +61,6 @@ extern "C" {
 
 #define BUFFER_SIZE 256
 
-// this struct is also used for putline and getline
 typedef struct my_messsage
 {
 	MESSAGE_HEADER_STRUCT HEADER;
@@ -69,23 +68,26 @@ typedef struct my_messsage
 } MESSAGE, * MESSAGE_PTR;
 
 MESSAGE_PTR msg_ptr; // ISR message
-_queue_id          	handler_qid; // For the isr
-_queue_id          	putline_qid; // For putline (when a user task writes)
+_queue_id handler_qid; // For the isr
 
-_pool_id   			message_pool;
+// Mutex!
+MUTEX_STRUCT accessmutex;
+MUTEX_ATTR_STRUCT mutexattr;
+// MUTEX LOCKED MEMORY
+_queue_id putline_qid; // the qid for the OpenW;
+int num_of_tasks = 0; // Number of User Tasks
+// END MUTEX LOCKED
 
-// Message Buffer(s)
+// We only use one message pool.
+_pool_id message_pool;
+
+// Message Buffer(s) for various tasks
 unsigned char msgBuf[BUFFER_SIZE];
 unsigned char txBuf[BUFFER_SIZE];
 
 // The characters that are typed in, and edited with special keywords
 unsigned char handleBuf[BUFFER_SIZE] = "";
 
-// Number of User Tasks
-static int num_of_tasks = 0;
-
-MUTEX_STRUCT accessmutex;
-MUTEX_ATTR_STRUCT mutexattr;
 
 /*
 ** ===================================================================

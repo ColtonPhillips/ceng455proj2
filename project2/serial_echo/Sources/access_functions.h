@@ -15,35 +15,39 @@
 #include <message.h>
 #include "os_tasks.h"
 
-// TODO: Mutex/Sem the data structures to prevent race conditions
-
-// Linked List stores our readqueue
+// A Linked List stores our readqueue
 typedef struct mynode {
 	_queue_id data;
 	struct node* next;
 } node, * node_ptr;
 
+// Linked list functions
 node_ptr create (_queue_id data, node_ptr next);
-node_ptr prepend(node_ptr head,_queue_id data);
 unsigned int count(node_ptr head);
 node_ptr append(node_ptr head, _queue_id data);
 node_ptr search(node_ptr head,_queue_id data);
 node_ptr remove_front(node_ptr head);
 node_ptr remove_back(node_ptr head);
 node_ptr remove_any(node_ptr head,node_ptr nd);
-void print_list(node_ptr head);
 
-// Access Memory
-bool OpenRStatus = false; // whether someone has access to R or W
+// Handy functions
+void print_list(node_ptr head);
+void lock();
+void lock();
+
+// Access Memory (mutex resources)
+bool OpenRStatus = false; 	// whether someone has access to R
 bool getlineStatus = false; // whether getline is called
-bool OpenWStatus = false;
-node_ptr  read_head;
+bool OpenWStatus = false;	// Whether someone has access to W
+_queue_id openWqid = 0;	// The User task who opened to W
+bool putlineStatus = false;	// Whether putline has been called
+node_ptr  read_head;		// the linked list of reading user tasks (qids)
 
 // Access functions
-bool OpenR(_queue_id stream_no);
+bool OpenR(_queue_id qid);
 bool _getline(char * string, _queue_id qid);
-_queue_id OpenW();
-_queue_id _putline(_queue_id qid, char * string);
+_queue_id OpenW(_queue_id qid);
+bool _putline(_queue_id qid, char * string);
 bool Close(_queue_id qid);
 
 #endif /* SOURCES_ACCESS_FUNCTIONS_H_ */

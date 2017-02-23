@@ -1,127 +1,10 @@
-12:39:08 **** Incremental Build of configuration Debug for project serial_echo ****
+15:52:27 **** Incremental Build of configuration Debug for project serial_echo ****
 make all 
-Building file: ../Sources/Events.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Sources/Events.d" -MT"Sources/Events.o" -c -o "Sources/Events.o" "../Sources/Events.c"
-../Sources/Events.c: In function 'myUART_RxCallback':
-../Sources/Events.c:73:3: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
-   strcpy(ISR_msg_ptr->DATA, myRxBuff);
-   ^
-In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/fsl_bitaccess.h:80,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/MK64F12_extension.h:92,
-                 from C:/project2/serial_echo/SDK/platform/devices/fsl_device_registers.h:343,
-                 from C:/project2/serial_echo/Generated_Code/Cpu.h:71,
-                 from ../Sources/Events.c:30:
-c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
- char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
-        ^
-../Sources/Events.c:73:3: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
-   strcpy(ISR_msg_ptr->DATA, myRxBuff);
-   ^
-In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/fsl_bitaccess.h:80,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/MK64F12_extension.h:92,
-                 from C:/project2/serial_echo/SDK/platform/devices/fsl_device_registers.h:343,
-                 from C:/project2/serial_echo/Generated_Code/Cpu.h:71,
-                 from ../Sources/Events.c:30:
-c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'const char * restrict' but argument is of type 'uint8_t *'
- char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
-        ^
-In file included from ../Sources/Events.c:33:0:
-../Sources/Events.c: At top level:
-../Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Sources/Events.c
- 
-Building file: ../Sources/access_functions.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Sources/access_functions.d" -MT"Sources/access_functions.o" -c -o "Sources/access_functions.o" "../Sources/access_functions.c"
-../Sources/access_functions.c: In function 'create':
-../Sources/access_functions.c:19:20: warning: assignment from incompatible pointer type [enabled by default]
-     new_node->next = next;
-                    ^
-../Sources/access_functions.c: In function 'count':
-../Sources/access_functions.c:38:16: warning: assignment from incompatible pointer type [enabled by default]
-         cursor = cursor->next;
-                ^
-../Sources/access_functions.c: In function 'append':
-../Sources/access_functions.c:48:16: warning: assignment from incompatible pointer type [enabled by default]
-         cursor = cursor->next;
-                ^
-../Sources/access_functions.c:52:18: warning: assignment from incompatible pointer type [enabled by default]
-     cursor->next = new_node;
-                  ^
-../Sources/access_functions.c: In function 'search':
-../Sources/access_functions.c:65:16: warning: assignment from incompatible pointer type [enabled by default]
-         cursor = cursor->next;
-                ^
-../Sources/access_functions.c: In function 'remove_back':
-../Sources/access_functions.c:80:16: warning: assignment from incompatible pointer type [enabled by default]
-         cursor = cursor->next;
-                ^
-../Sources/access_functions.c: In function 'remove_front':
-../Sources/access_functions.c:100:10: warning: assignment from incompatible pointer type [enabled by default]
-     head = head->next;
-          ^
-../Sources/access_functions.c: In function 'remove_any':
-../Sources/access_functions.c:129:25: warning: assignment from incompatible pointer type [enabled by default]
-         if(cursor->next = nd)
-                         ^
-../Sources/access_functions.c:129:9: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
-         if(cursor->next = nd)
-         ^
-../Sources/access_functions.c:131:16: warning: assignment from incompatible pointer type [enabled by default]
-         cursor = cursor->next;
-                ^
-../Sources/access_functions.c:136:21: warning: initialization from incompatible pointer type [enabled by default]
-         node* tmp = cursor->next;
-                     ^
-../Sources/access_functions.c: In function 'print_list':
-../Sources/access_functions.c:149:3: warning: format '%d' expects argument of type 'int', but argument 3 has type 'node_ptr' [-Wformat=]
-   printf("Count:%d, Item: %d, Qid:%d, Next:%d\n",c,trav,trav->data, trav->next);
-   ^
-../Sources/access_functions.c:149:3: warning: format '%d' expects argument of type 'int', but argument 5 has type 'struct node *' [-Wformat=]
-../Sources/access_functions.c:150:8: warning: assignment from incompatible pointer type [enabled by default]
-   trav = trav->next;
-        ^
-../Sources/access_functions.c: In function '_getline':
-../Sources/access_functions.c:188:2: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
-  strcpy(string,get_msg_ptr->DATA);
-  ^
-In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
-                 from C:/project2/serial_echo/SDK/platform/osa/inc/fsl_os_abstraction.h:35,
-                 from C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/nio.h:25,
-                 from C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/std_prv.h:30,
-                 from C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include/stdio.h:32,
-                 from ../Sources/access_functions.h:11,
-                 from ../Sources/access_functions.c:8:
-c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
- char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
-        ^
-In file included from ../Sources/access_functions.h:16:0,
-                 from ../Sources/access_functions.c:8:
-../Sources/access_functions.c: At top level:
-../Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Sources/access_functions.c
- 
-Building file: ../Sources/main.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Sources/main.d" -MT"Sources/main.o" -c -o "Sources/main.o" "../Sources/main.c"
-In file included from ../Sources/main.c:34:0:
-../Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Sources/main.c
- 
 Building file: ../Sources/os_tasks.c
 Invoking: Cross ARM C Compiler
 arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Sources/os_tasks.d" -MT"Sources/os_tasks.o" -c -o "Sources/os_tasks.o" "../Sources/os_tasks.c"
 ../Sources/os_tasks.c: In function 'serial_send':
-../Sources/os_tasks.c:84:3: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:85:3: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
    strcpy(txBuf,str);
    ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -133,7 +16,19 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:85:3: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:85:3: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+   strcpy(txBuf,str);
+   ^
+In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
+                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/fsl_bitaccess.h:80,
+                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/MK64F12_extension.h:92,
+                 from C:/project2/serial_echo/SDK/platform/devices/fsl_device_registers.h:343,
+                 from C:/project2/serial_echo/Generated_Code/Cpu.h:71,
+                 from ../Sources/os_tasks.c:31:
+c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+../Sources/os_tasks.c:86:3: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
    UART_DRV_SendData(myUART_IDX, txBuf, strlen(txBuf));
    ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -145,9 +40,10 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:33:9: note: expected 'const char *' but argument is of type 'unsigned char *'
  size_t  _EXFUN(strlen,(const char *));
          ^
-../Sources/os_tasks.c:86:3: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-   printf("sizeof: %d\n",strlen(txBuf));
-   ^
+../Sources/os_tasks.c: In function 'backNtimes':
+../Sources/os_tasks.c:98:2: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+  UART_DRV_SendData(myUART_IDX, msgBuf, strlen(msgBuf));
+  ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
                  from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/fsl_bitaccess.h:80,
                  from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/MK64F12_extension.h:92,
@@ -158,7 +54,16 @@ c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:33:9: note: expecte
  size_t  _EXFUN(strlen,(const char *));
          ^
 ../Sources/os_tasks.c: In function 'serial_task':
-../Sources/os_tasks.c:118:3: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:105:5: warning: pointer targets in passing argument 1 of 'serial_send' differ in signedness [-Wpointer-sign]
+     serial_send("\n\rType here: ");
+     ^
+../Sources/os_tasks.c:84:6: note: expected 'unsigned char *' but argument is of type 'char *'
+ void serial_send(unsigned char * str) {
+      ^
+../Sources/os_tasks.c:115:5: warning: implicit declaration of function 'unlock' [-Wimplicit-function-declaration]
+     unlock();
+     ^
+../Sources/os_tasks.c:141:3: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
    unsigned int first_null_char = strlen(handleBuf);
    ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -170,7 +75,7 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:33:9: note: expected 'const char *' but argument is of type 'unsigned char *'
  size_t  _EXFUN(strlen,(const char *));
          ^
-../Sources/os_tasks.c:122:4: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:144:4: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
     if (strlen(handleBuf) > 0) {
     ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -182,19 +87,13 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:33:9: note: expected 'const char *' but argument is of type 'unsigned char *'
  size_t  _EXFUN(strlen,(const char *));
          ^
-../Sources/os_tasks.c:148:4: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-    UART_DRV_SendData(myUART_IDX, msgBuf, strlen(msgBuf));
-    ^
-In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/fsl_bitaccess.h:80,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/MK64F12_extension.h:92,
-                 from C:/project2/serial_echo/SDK/platform/devices/fsl_device_registers.h:343,
-                 from C:/project2/serial_echo/Generated_Code/Cpu.h:71,
-                 from ../Sources/os_tasks.c:31:
-c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:33:9: note: expected 'const char *' but argument is of type 'unsigned char *'
- size_t  _EXFUN(strlen,(const char *));
-         ^
-../Sources/os_tasks.c:151:4: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:146:5: warning: pointer targets in passing argument 1 of 'serial_send' differ in signedness [-Wpointer-sign]
+     serial_send("\b \b");
+     ^
+../Sources/os_tasks.c:84:6: note: expected 'unsigned char *' but argument is of type 'char *'
+ void serial_send(unsigned char * str) {
+      ^
+../Sources/os_tasks.c:167:4: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
     strcpy(handleBuf,"");
     ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -206,10 +105,7 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:135:17: warning: unused variable 'i' [-Wunused-variable]
-    unsigned int i;
-                 ^
-../Sources/os_tasks.c:171:6: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:187:6: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
       strcpy(getline_msg_ptr->DATA, handleBuf);
       ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -221,7 +117,7 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:171:6: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:187:6: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
       strcpy(getline_msg_ptr->DATA, handleBuf);
       ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -233,12 +129,12 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:177:15: warning: assignment from incompatible pointer type [enabled by default]
+../Sources/os_tasks.c:193:15: warning: assignment from incompatible pointer type [enabled by default]
       traverse = traverse->next;
                ^
-../Sources/os_tasks.c:180:6: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
-      strcpy(handleBuf,"");
-      ^
+../Sources/os_tasks.c:197:5: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
+     strcpy(handleBuf,"");
+     ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
                  from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/fsl_bitaccess.h:80,
                  from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/MK64F12_extension.h:92,
@@ -248,25 +144,13 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:185:4: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
-    strcpy(msgBuf,"\r\n");
+../Sources/os_tasks.c:202:4: warning: pointer targets in passing argument 1 of 'serial_send' differ in signedness [-Wpointer-sign]
+    serial_send("\r\n");
     ^
-In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/fsl_bitaccess.h:80,
-                 from C:/project2/serial_echo/SDK/platform/devices/MK64F12/include/MK64F12_extension.h:92,
-                 from C:/project2/serial_echo/SDK/platform/devices/fsl_device_registers.h:343,
-                 from C:/project2/serial_echo/Generated_Code/Cpu.h:71,
-                 from ../Sources/os_tasks.c:31:
-c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
- char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
-        ^
-../Sources/os_tasks.c:190:4: warning: pointer targets in passing argument 1 of 'serial_send' differ in signedness [-Wpointer-sign]
-    serial_send(msg_ptr->DATA);
-    ^
-../Sources/os_tasks.c:83:6: note: expected 'char *' but argument is of type 'unsigned char *'
- void serial_send(char * str) {
+../Sources/os_tasks.c:84:6: note: expected 'unsigned char *' but argument is of type 'char *'
+ void serial_send(unsigned char * str) {
       ^
-../Sources/os_tasks.c:191:4: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:213:4: warning: pointer targets in passing argument 1 of 'strcpy' differ in signedness [-Wpointer-sign]
     strcpy(msgBuf, msg_ptr->DATA);
     ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -278,7 +162,7 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:191:4: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:213:4: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
     strcpy(msgBuf, msg_ptr->DATA);
     ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -290,7 +174,7 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:30:8: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:192:4: warning: pointer targets in passing argument 1 of 'strcat' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:214:4: warning: pointer targets in passing argument 1 of 'strcat' differ in signedness [-Wpointer-sign]
     strcat(handleBuf, msgBuf);
     ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -302,7 +186,7 @@ In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib
 c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:26:8: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  char  *_EXFUN(strcat,(char *__restrict, const char *__restrict));
         ^
-../Sources/os_tasks.c:192:4: warning: pointer targets in passing argument 2 of 'strcat' differ in signedness [-Wpointer-sign]
+../Sources/os_tasks.c:214:4: warning: pointer targets in passing argument 2 of 'strcat' differ in signedness [-Wpointer-sign]
     strcat(handleBuf, msgBuf);
     ^
 In file included from c:\freescale\kds_v3\toolchain\arm-none-eabi\include\stdlib.h:11:0,
@@ -316,51 +200,6 @@ c:\freescale\kds_v3\toolchain\arm-none-eabi\include\string.h:26:8: note: expecte
         ^
 Finished building: ../Sources/os_tasks.c
  
-Building file: ../Sources/rtos_main_task.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Sources/rtos_main_task.d" -MT"Sources/rtos_main_task.o" -c -o "Sources/rtos_main_task.o" "../Sources/rtos_main_task.c"
-In file included from ../Sources/rtos_main_task.c:33:0:
-../Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Sources/rtos_main_task.c
- 
-Building file: ../Generated_Code/Cpu.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Generated_Code/Cpu.d" -MT"Generated_Code/Cpu.o" -c -o "Generated_Code/Cpu.o" "../Generated_Code/Cpu.c"
-In file included from ../Generated_Code/Cpu.c:71:0:
-C:/project2/serial_echo/Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Generated_Code/Cpu.c
- 
-Building file: ../Generated_Code/SerialTask.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Generated_Code/SerialTask.d" -MT"Generated_Code/SerialTask.o" -c -o "Generated_Code/SerialTask.o" "../Generated_Code/SerialTask.c"
-In file included from ../Generated_Code/SerialTask.c:56:0:
-C:/project2/serial_echo/Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Generated_Code/SerialTask.c
- 
-Building file: ../Generated_Code/UserTask.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Generated_Code/UserTask.d" -MT"Generated_Code/UserTask.o" -c -o "Generated_Code/UserTask.o" "../Generated_Code/UserTask.c"
-In file included from ../Generated_Code/UserTask.c:56:0:
-C:/project2/serial_echo/Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Generated_Code/UserTask.c
- 
-Building file: ../Generated_Code/mqx_ksdk.c
-Invoking: Cross ARM C Compiler
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MK64FN1M0VLL12" -D"FSL_RTOS_MQX" -D"PEX_MQX_KSDK" -I"C:/project2/serial_echo/SDK/platform/hal/inc" -I"C:/project2/serial_echo/SDK/platform/hal/src/sim/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/src/clock/MK64F12" -I"C:/project2/serial_echo/SDK/platform/system/inc" -I"C:/project2/serial_echo/SDK/platform/osa/inc" -I"C:/project2/serial_echo/SDK/platform/CMSIS/Include" -I"C:/project2/serial_echo/SDK/platform/devices" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/include" -I"C:/project2/serial_echo/SDK/platform/utilities/src" -I"C:/project2/serial_echo/SDK/platform/utilities/inc" -I"C:/project2/serial_echo/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Generated_Code/SDK/platform/devices/MK64F12/startup" -I"C:/project2/serial_echo/Sources" -I"C:/project2/serial_echo/Generated_Code" -I"C:/project2/serial_echo/SDK/platform/drivers/inc" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/cpu" -I"C:/project2/serial_echo/SDK/rtos/mqx/config/common" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/bsp" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/src" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/fs" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/include" -I"C:/project2/serial_echo/SDK/rtos/mqx/mqx_stdlib/source/stdio" -I"C:/project2/serial_echo/SDK/platform/hal/src/uart" -I"C:/project2/serial_echo/SDK/platform/drivers/src/uart" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/board" -I"C:/project2/serial_echo/Generated_Code/SDK/rtos/mqx/config/mcu" -std=c99 -MMD -MP -MF"Generated_Code/mqx_ksdk.d" -MT"Generated_Code/mqx_ksdk.o" -c -o "Generated_Code/mqx_ksdk.o" "../Generated_Code/mqx_ksdk.c"
-In file included from ../Generated_Code/mqx_ksdk.c:59:0:
-C:/project2/serial_echo/Sources/os_tasks.h:85:12: warning: 'num_of_tasks' defined but not used [-Wunused-variable]
- static int num_of_tasks = 0;
-            ^
-Finished building: ../Generated_Code/mqx_ksdk.c
- 
 Building target: serial_echo.elf
 Invoking: Cross ARM C++ Linker
 arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -T "C:/project2/serial_echo/Project_Settings/Linker_Files/ProcessorExpert.ld" -Xlinker --gc-sections -L"C:/project2/serial_echo/Project_Settings/Linker_Files" -Wl,-Map,"serial_echo.map" -lgcc -lc -lsupc++ -lm -specs=nosys.specs -nostartfiles -Xlinker -z -Xlinker muldefs -Xlinker -static -o "serial_echo.elf"  ./Static_Code/System/PE_low_level_init.o  ./Sources/Events.o ./Sources/access_functions.o ./Sources/main.o ./Sources/os_tasks.o ./Sources/rtos_main_task.o  ./SDK/rtos/mqx/mqx_stdlib/source/strings/strings.o  ./SDK/rtos/mqx/mqx_stdlib/source/stdio/buf_prv.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/err.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/fclose.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/fflush.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/fopen.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/fp_prv.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/fread.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/fwrite.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/get.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/pos.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/print.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/print_prv.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/put.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/scan.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/scan_prv.o ./SDK/rtos/mqx/mqx_stdlib/source/stdio/stdio.o  ./SDK/rtos/mqx/mqx/source/string/str_utos.o ./SDK/rtos/mqx/mqx/source/string/strnlen.o  ./SDK/rtos/mqx/mqx/source/psp/cortex_m/core/M4/boot.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/core/M4/dispatch.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/core/M4/support.o  ./SDK/rtos/mqx/mqx/source/psp/cortex_m/compiler/gcc_arm/comp.o  ./SDK/rtos/mqx/mqx/source/psp/cortex_m/cortex.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/int_gkis.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/int_kisr.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/int_pvta.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/int_unx.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/int_vtab.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/int_xcpt.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/ipsum.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/mem_copy.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/mem_zero.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/nvic.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_dati.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_gelms.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_hoti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_iinit.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_mat1.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_mat2.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_mat3.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_miti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_msti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_mstiq.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_nsti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_psti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_seti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_supp.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tiad.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tida.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tihr.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_timn.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tims.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tinm.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tins.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tiol.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tipr.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tips.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tise.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tisu.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tius.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_tkti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/psp_usti.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/sc_irdyq.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/stack_bu.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/stack_de.o ./SDK/rtos/mqx/mqx/source/psp/cortex_m/stack_st.o  ./SDK/rtos/mqx/mqx/source/nio/src/errno.o ./SDK/rtos/mqx/mqx/source/nio/src/nio.o ./SDK/rtos/mqx/mqx/source/nio/src/nio_posix.o ./SDK/rtos/mqx/mqx/source/nio/src/nio_std_adpt.o  ./SDK/rtos/mqx/mqx/source/nio/fs/fs_supp.o  ./SDK/rtos/mqx/mqx/source/nio/drivers/nio_tty/src/nio_tty.o  ./SDK/rtos/mqx/mqx/source/nio/drivers/nio_serial/src/nio_serial.o  ./SDK/rtos/mqx/mqx/source/nio/drivers/nio_dummy/src/nio_dummy.o  ./SDK/rtos/mqx/mqx/source/kernel/event.o ./SDK/rtos/mqx/mqx/source/kernel/idletask.o ./SDK/rtos/mqx/mqx/source/kernel/inittask.o ./SDK/rtos/mqx/mqx/source/kernel/int.o ./SDK/rtos/mqx/mqx/source/kernel/klog.o ./SDK/rtos/mqx/mqx/source/kernel/log.o ./SDK/rtos/mqx/mqx/source/kernel/lwevent.o ./SDK/rtos/mqx/mqx/source/kernel/lwlog.o ./SDK/rtos/mqx/mqx/source/kernel/lwmem.o ./SDK/rtos/mqx/mqx/source/kernel/lwmsgq.o ./SDK/rtos/mqx/mqx/source/kernel/lwsem.o ./SDK/rtos/mqx/mqx/source/kernel/lwtimer.o ./SDK/rtos/mqx/mqx/source/kernel/mem.o ./SDK/rtos/mqx/mqx/source/kernel/mqx.o ./SDK/rtos/mqx/mqx/source/kernel/msg.o ./SDK/rtos/mqx/mqx/source/kernel/msgpool.o ./SDK/rtos/mqx/mqx/source/kernel/msgq.o ./SDK/rtos/mqx/mqx/source/kernel/mutex.o ./SDK/rtos/mqx/mqx/source/kernel/name.o ./SDK/rtos/mqx/mqx/source/kernel/partition.o ./SDK/rtos/mqx/mqx/source/kernel/queue.o ./SDK/rtos/mqx/mqx/source/kernel/sched.o ./SDK/rtos/mqx/mqx/source/kernel/sem.o ./SDK/rtos/mqx/mqx/source/kernel/task.o ./SDK/rtos/mqx/mqx/source/kernel/taskq.o ./SDK/rtos/mqx/mqx/source/kernel/time.o ./SDK/rtos/mqx/mqx/source/kernel/timer.o ./SDK/rtos/mqx/mqx/source/kernel/tlsf.o ./SDK/rtos/mqx/mqx/source/kernel/tlsf_adaptation.o ./SDK/rtos/mqx/mqx/source/kernel/watchdog.o  ./SDK/rtos/mqx/mqx/source/bsp/init_bsp.o  ./SDK/platform/utilities/src/fsl_debug_console.o ./SDK/platform/utilities/src/fsl_misc_utilities.o ./SDK/platform/utilities/src/print_scan.o  ./SDK/platform/system/src/interrupt/fsl_interrupt_manager.o  ./SDK/platform/system/src/hwtimer/fsl_hwtimer.o ./SDK/platform/system/src/hwtimer/fsl_hwtimer_systick.o  ./SDK/platform/system/src/clock/MK64F12/fsl_clock_MK64F12.o  ./SDK/platform/system/src/clock/fsl_clock_manager.o ./SDK/platform/system/src/clock/fsl_clock_manager_common.o  ./SDK/platform/osa/src/fsl_os_abstraction_mqx.o  ./SDK/platform/hal/src/uart/fsl_uart_hal.o  ./SDK/platform/hal/src/sim/MK64F12/fsl_sim_hal_MK64F12.o  ./SDK/platform/hal/src/rtc/fsl_rtc_hal.o  ./SDK/platform/hal/src/port/fsl_port_hal.o  ./SDK/platform/hal/src/osc/fsl_osc_hal.o  ./SDK/platform/hal/src/mpu/fsl_mpu_hal.o  ./SDK/platform/hal/src/mcg/fsl_mcg_hal.o ./SDK/platform/hal/src/mcg/fsl_mcg_hal_modes.o  ./SDK/platform/drivers/src/uart/fsl_uart_common.o ./SDK/platform/drivers/src/uart/fsl_uart_driver.o  ./SDK/platform/drivers/src/rtc/fsl_rtc_common.o  ./SDK/platform/drivers/src/mpu/fsl_mpu_common.o ./SDK/platform/drivers/src/mpu/fsl_mpu_driver.o  ./SDK/platform/devices/MK64F12/startup/gcc/startup_MK64F12.o  ./SDK/platform/devices/MK64F12/startup/system_MK64F12.o  ./SDK/platform/devices/startup.o  ./Generated_Code/Cpu.o ./Generated_Code/MainTask.o ./Generated_Code/SerialTask.o ./Generated_Code/UserTask.o ./Generated_Code/clockMan1.o ./Generated_Code/fsl_hwtimer1.o ./Generated_Code/fsl_mpu1.o ./Generated_Code/hardware_init.o ./Generated_Code/mqx_ksdk.o ./Generated_Code/myUART.o ./Generated_Code/osa1.o ./Generated_Code/pin_init.o ./Generated_Code/uart1.o   
@@ -369,9 +208,9 @@ Finished building target: serial_echo.elf
 Invoking: Cross ARM GNU Print Size
 arm-none-eabi-size --format=berkeley "serial_echo.elf"
    text	   data	    bss	    dec	    hex	filename
-  62660	   2288	   4476	  69424	  10f30	serial_echo.elf
+  63960	   2288	   4476	  70724	  11444	serial_echo.elf
 Finished building: serial_echo.siz
  
 
-12:39:17 Build Finished (took 8s.720ms)
+15:52:30 Build Finished (took 2s.611ms)
 
