@@ -58,7 +58,7 @@ extern "C" {
 #define PUTLINE_QUEUE 9
 #define GETLINE_QUEUE 10
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 256
 
 // this struct is also used for putline and getline
 typedef struct my_messsage

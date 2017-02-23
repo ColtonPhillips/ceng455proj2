@@ -45,16 +45,6 @@ extern "C" {
 #include <stddef.h>
 #include <string.h>
 
-/*
-** ===================================================================
-**     Callback    : serial_task
-**     Description : Task function entry.
-**     Parameters  :
-**       task_init_data - OS task parameter
-**     Returns : Nothing
-** ===================================================================
-*/
-
 void init () {
 	/*  Initialize Read
 	MUTEX_ATTR_STRUCT mutexattr;
@@ -83,16 +73,20 @@ void init () {
 	  _task_block();
    }
 
-
 /* Create putline Message Queue as Well! */
   	putline_qid  = _msgq_open(PUTLINE_QUEUE, 0);
   	if (putline_qid == 0) {
   	  printf("\nCould not open a write message queue\n");
   	  _task_block();
   	}
-
 }
 
+void serial_send(char * str) {
+	 strcpy(txBuf,str);
+	 UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
+}
+
+// Handler starts here:
 void serial_task(os_task_param_t task_init_data)
 {
 	init();
@@ -100,85 +94,86 @@ void serial_task(os_task_param_t task_init_data)
     /* Write your local variable definition here */
     printf("serialTask Created!\r\n\r\n");
   	// Write to debug console
-  sprintf(txBuf, "\n\rType here: ");
+    //strcpy(msgBuf, "\n\rType here: ");
+    serial_send("\n\rType here: ");
+	//  UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 
-  UART_DRV_SendData(myUART_IDX, txBuf, sizeof(txBuf));
-
- while (1) {
+    while (1) {
 		OSA_TimeDelay(100);
-	// Receive a message from ISR
-	msg_ptr = _msgq_receive(handler_qid, 0);
-	if (msg_ptr == NULL) {
-	         printf("\nCould not receive an ISR message\n");
-	         _task_block();
-	}
+		// Receive a message from ISR
+		msg_ptr = _msgq_receive(handler_qid, 0);
+		if (msg_ptr == NULL) {
+				 printf("\nCould not receive an ISR message\n");
+				 _task_block();
+		}
 
-	// We only Read if a user has called OpenR
-	if (!OpenRStatus) {
-			/* free the message */
-			_msg_free(msg_ptr);
-			continue;
-	}
+		// We only Read if a user has called OpenR
+		if (!OpenRStatus) {
+				/* free the message */
+				_msg_free(msg_ptr);
+				continue;
+		}
 
-	//Ctrl + H: Erase character
-	// TODO: remove the double erase bug
-	unsigned char new_char = msg_ptr->DATA[0];
-	printf("my new character: %c\n",new_char);
-	unsigned int first_null_char = strlen(handleBuf);
-	printf("my first null: %d \n", first_null_char);
-	if (new_char == 0x8) {
-		if (strlen(handleBuf) > 0) {
-			handleBuf[first_null_char-1] = '\0';
-			sprintf(msgBuf, "\b \b");
+		unsigned char new_char = msg_ptr->DATA[0];
+		unsigned int first_null_char = strlen(handleBuf);
+		//Ctrl + H: Erase character
+		// TODO: remove the double erase bug
+		if (new_char == 0x8) {
+			if (strlen(handleBuf) > 0) {
+				handleBuf[first_null_char-1] = '\0';
+				strcpy(msgBuf, "\b \b");
+				UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+			}
+		}
+		// Ctrl + W: Erase previous word
+		else if (new_char == 0x17) {
+
+		}
+		//Ctrl + U: Erase Line
+		else if (new_char == 0x15) {
+			unsigned int i;
+			for (i = first_null_char-1; i > 0; i--) {
+				if (handleBuf[i] == '\n') {handleBuf[i] = '\0'; break;}
+			}
+			unsigned int num_of_bees = first_null_char - i - 1;
+			printf("bees: %d\n", num_of_bees);
+			int j;
+			for (j = 0; j < num_of_bees*3; j+=3) {
+				msgBuf[j] = '\b';
+				msgBuf[j+1] = ' ';
+				msgBuf[j+2] = '\b';
+			}
+			msgBuf[j] = '\0';
 			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
 		}
-	}
-	// Ctrl + W: Erase previous word
-	else if (new_char == 0x17) {
+		//Enter:
+		else if (new_char == 0xd) {
+			strcpy(msgBuf,"\n");
+			strcat(handleBuf, msgBuf); // call getline
+			//serial_send("\r\n");
+			strcpy(msgBuf,"\r\n");
+			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+		}
+		// any normal character a-z and numbers, <,.; etc
+		else if (new_char >= 0x20 && new_char <= 0x7E ){
+			//serial_send(msg_ptr->DATA);
+			strcpy(msgBuf, msg_ptr->DATA);
+			strcat(handleBuf, msgBuf);
+			UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
+		}
+		// throw all other characters away
+		else {
+		}
 
-	}
-	//Ctrl + U: Erase Line
-	else if (new_char == 0x15) {
-		unsigned int i; int c;
-		for (i = first_null_char-1; i > 0; i--) {
-			if (handleBuf[i] == '\n') {handleBuf[i] = '\0'; break;}
-		}
-		unsigned int num_of_bees = first_null_char - i - 1;
-		printf("bees: %d\n", num_of_bees);
-		int j;
-		for (j = 0; j < num_of_bees*3; j+=3) {
-			msgBuf[j] = '\b';
-			msgBuf[j+1] = ' ';
-			msgBuf[j+2] = '\b';
-		}
-		msgBuf[j] = '\0';
-		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
-	}
-	//Enter:
-	else if (new_char == 0xd) {
-		sprintf(msgBuf, "\n");
-		strcat(handleBuf, msgBuf); // call getline
-		sprintf(msgBuf, "\r\n");
-		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
-	}
-	// any normal character a-z and numbers, <,.; etc
-	else if (new_char >= 0x20 && new_char <= 0x7E ){
-		sprintf(msgBuf, msg_ptr->DATA);
+		_msg_free(msg_ptr);
+
+		printf("my first null: %d \n", first_null_char);
+		printf("my new character: %c\n",new_char);
+		printf("buf: %s\n\n",handleBuf);
 		printf("msgBuf: %s\n", msg_ptr->DATA);
-		strcat(handleBuf, msgBuf);
 		printf("%s, %d", msgBuf ,sizeof(msgBuf));
-		UART_DRV_SendData(myUART_IDX, msgBuf, sizeof(msgBuf));
-	}
-	// throw all other characters away
-	else {
 
-	}
-
-	_msg_free(msg_ptr);
-	printf("buf: %s\n\n",handleBuf);
-
-	OSA_TimeDelay(100);
- }
+ 	 } // while end
 }
 
 /*
@@ -207,7 +202,6 @@ void user_task(os_task_param_t task_init_data)
 
 	OpenR(getline_qid);
   //while (1) {
-
     
  // }
 }
