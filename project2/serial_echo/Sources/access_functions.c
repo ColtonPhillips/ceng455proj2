@@ -197,7 +197,6 @@ bool _getline(char * string, _queue_id qid){
 	getlineStatus = true;
 	unlock();
 
-
 	//Block for message
 	MESSAGE_PTR get_msg_ptr = _msgq_receive(qid, 0);
 	if (get_msg_ptr == NULL) {
@@ -246,6 +245,7 @@ bool _putline(_queue_id qid, char * string){
 	 unlock();
 	 _task_block();
 	}
+
 	// Populate a message
 	Putline_msg_ptr->HEADER.SOURCE_QID = 0;
 	Putline_msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, PUTLINE_QUEUE);
@@ -268,28 +268,23 @@ bool _putline(_queue_id qid, char * string){
 // Revoke read and/or write priveledges
 bool Close(_queue_id qid) {
 	lock();
-	node_ptr to_delete = search(read_head,qid);
-	// It's NOT in the Read list
-	if (to_delete == NULL) {
-		// But, Maybe we're trying to delete the writing task
-		if (qid == openWqid) {
-			openWqid = 0;
-			putlineStatus = false;
-			OpenWStatus = false;
-			unlock();
-			return true;
-		}
-		// It's NOT in the read_head Linked List OR the openWqid
-		else {
-			unlock();
-			return false;
-		}
+	// Close Write if it its qid
+	if (qid == openWqid) {
+		putlineStatus = false;
+		OpenWStatus = false;
+		unlock();
+		return true;
 	}
-	// It IS in the read list
+	// Close Read if it is qid
+	node_ptr to_delete = search(read_head,qid);
+	if (to_delete == NULL) {
+		unlock();
+		return false;
+	}
 	else {
-		// remove it
+		// Remove it
 		read_head = remove_any(read_head,to_delete);
-		// Close R if its totally empty
+		// Set shit to false if its now empty
 		if (count(read_head) <= 0) {
 			OpenRStatus = false;
 			getlineStatus = false;

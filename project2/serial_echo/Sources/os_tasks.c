@@ -50,12 +50,12 @@ extern "C" {
 void handler_init () {
 	 //Initialize mutex attributes:
 	if (_mutatr_init(&mutexattr) != MQX_OK) {
-		printf("mutex init failed");
+		printf("mutex attr init failed");
 		_mqx_exit(0);
 	}
 	// Initialize Mutex
 	if (_mutex_init(&accessmutex,&mutexattr) != MQX_OK) {
-		printf("BAD");
+		printf("Mutex failed to init.");
 		_mqx_exit(0);
 	}
     // Open an ISR message queue
@@ -71,7 +71,7 @@ void handler_init () {
 	  printf("\nCould not create a handler message pool\n");
 	  _task_block();
    }
-/* Create putline Message Queue as Well! */
+   /* Create putline Message Queue as Well! */
   	putline_qid  = _msgq_open(PUTLINE_QUEUE, 0);
   	if (putline_qid == 0) {
   	  printf("\nCould not open a write message queue\n");
@@ -86,6 +86,7 @@ void serial_send(unsigned char * str) {
 	 UART_DRV_SendData(myUART_IDX, txBuf, strlen(txBuf));
 }
 
+// Moves cursor back N times (for erasing lines and words)
 void backNtimes (unsigned int num_of_bees) {
 	int j;
 	for (j = 0; j < num_of_bees*3; j+=3) {
@@ -103,7 +104,9 @@ void serial_task(os_task_param_t task_init_data)
 {
 	handler_init();
     serial_send("\n\rType here: ");
+	_sched_yield();
     while (1) {
+    	_sched_yield();
 		// WRITE (potentially blocking)
 		// Only get a message if one has been sent!
 		if (putlineStatus) {
@@ -115,17 +118,18 @@ void serial_task(os_task_param_t task_init_data)
 				unlock();
 				_task_block();
 			}
+			strcpy(msgBuf,msg_ptr->DATA);
+			strcat(msgBuf,"\n\r");
+			serial_send(msgBuf);
 			putlineStatus = false;
 			_msg_free(msg_ptr);
 			unlock();
 		}
 
-		// ISR (always blocking)
-		// Receive a message from ISR
-		msg_ptr = _msgq_receive(handler_qid, 0);
+		// ISR poll
+		msg_ptr = _msgq_poll(handler_qid);
 		if (msg_ptr == NULL) {
-				 printf("\nCould not receive an ISR message\n");
-				 _task_block();
+				 continue;
 		}
 
 		// READ
@@ -135,6 +139,8 @@ void serial_task(os_task_param_t task_init_data)
 				_msg_free(msg_ptr);
 				continue;
 		}
+
+
 		// implicit ELSE
 		// Handle all the possible ISR characters
 		unsigned char new_char = msg_ptr->DATA[0];
@@ -195,6 +201,7 @@ void serial_task(os_task_param_t task_init_data)
 				} // while end
 				// empty buffer after sending it!
 				strcpy(handleBuf,"");
+				_sched_yield();
 			}
 			// if getline not set. do nothing to the buffer, then move the cursor
 			else {}
@@ -218,7 +225,7 @@ void serial_task(os_task_param_t task_init_data)
 		_msg_free(msg_ptr); // finally free the message! :)
 
 		// debug print statements:
-		printf("buf: %s\n",handleBuf);
+		//printf("buf: %s\n",handleBuf);
  	 } // while end
 }
 
@@ -233,34 +240,81 @@ void serial_task(os_task_param_t task_init_data)
 */
 void user_task(os_task_param_t task_init_data)
 {
-	// incr number of tasks
-	lock();
-	num_of_tasks++; //  not necesary
-	unlock();
-	// Data declarations
-	_queue_id          	getline_qid; // For getline (when a user task reads)
+	// we will use a switch case to decide what our task will do!
+	unsigned int type = task_init_data;
+	_queue_id ut_q; // For getline (when a user task reads)
+	bool s = false; // the status of a function call is stored here
+	char out[BUFFER_SIZE]; // used to pass into access functions
 
-	// Open a getline message queue
-	getline_qid  = _msgq_open(GETLINE_QUEUE+num_of_tasks, 0);
-	if (getline_qid == 0) {
+	lock();
+	// Open a unique message queue
+	ut_q  = _msgq_open(GETLINE_QUEUE+num_of_tasks, 0);
+	if (ut_q == 0) {
 	  printf("\nCould not open a Usertask getline message queue\n");
 	  _task_block();
 	}
+	// increment number of tasks so that the q id is correct!
+	num_of_tasks++;
+	unlock();
 
-	// TODO: create different kinds of user tasks based on their task_init_data
+	switch (type) {
+	case 0:
+		// SIMPLE TEST
+		strcpy(out,"TEST!");
+		assert(_putline(ut_q, out) == false);
+	printf("User %d calls _putline.\n",ut_q);
+		assert(OpenR(ut_q));
+	printf("User %d calls OpenR.\n",ut_q);
+		assert(OpenR(ut_q) == false);
+	printf("User %d calls OpenR.\n",ut_q);
+		assert(_getline(out,ut_q));
+	printf("User %d calls _getline and it returns: %s\n",ut_q, out);
+		// HANDLER SHOULD SEND THE WORD "mango"
+		assert(strcmp(out,"mango") == 0);
+		assert(Close(ut_q));
+	printf("User %d calls Close.\n",ut_q);
+		assert(_getline(out,ut_q) == false);
+		assert(OpenR(ut_q));
+	printf("User %d calls OpenR.\n",ut_q);
+		assert(OpenW(ut_q));
+	printf("User %d calls OpenW.\n",ut_q);
+		assert(OpenW(ut_q) == false);
+	printf("User %d calls OpenW.\n",ut_q);
+		assert(_putline(ut_q, out));
+	printf("User %d calls _putline.\n",ut_q);
+		assert(Close(ut_q));
+	printf("User %d calls Close.\n",ut_q);
+		break;
 
+	// DOUBLE TEST
+	case 1:
+		assert(OpenR(ut_q));
+	printf("User %d calls OpenR.\n",ut_q);
+		assert(_getline(out,ut_q));
+	printf("User %d calls _getline and it returns: %s\n",ut_q, out);
+		// HANDLER SHOULD SEND THE WORD "mango"
+		assert(strcmp(out,"mango") == 0);
+		assert(OpenW(ut_q));
+	printf("User %d calls OpenW.\n",ut_q);
+		assert(_putline(ut_q, out));
+	printf("User %d calls _putline.\n",ut_q);
+		assert(Close(ut_q));
+	printf("User %d calls Close.\n",ut_q);
+		break;
+	default:
+		break;
+	}
 
-	bool v = OpenR(getline_qid);
-	printf("User %d calls OpenR and it returns: %d\n",getline_qid,v);
-	char out[BUFFER_SIZE];
-	v = _getline(out,getline_qid);
-	printf("User %d calls _getline and it returns: %d\n",getline_qid,v);
-	printf("User %d's string is now: %s\n",getline_qid,out);
-	v = Close(getline_qid);
-	printf("User %d calls Close and it returns: %d\n",getline_qid,v);
-	v = _getline(out,getline_qid);
-		printf("User %d calls _getline and it returns: %d\n",getline_qid,v);
-	printf("User %d terminates\n\n",getline_qid);
+/*
+	printf("User %d calls OpenR.\n",ut_q);
+	printf("User %d calls _getline and it returns: %s\n",ut_q, out);
+	printf("User %d calls Close.\n",ut_q);
+	printf("User %d calls OpenW.\n",ut_q);
+	printf("User %d calls OpenR.\n",ut_q);
+	printf("User %d calls _putline.\n",ut_q);
+	*/
+
+	printf("User %d terminates\n\n",ut_q);
 }
 
 /* END os_tasks */
