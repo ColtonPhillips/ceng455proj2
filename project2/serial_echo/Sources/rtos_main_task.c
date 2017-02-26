@@ -54,12 +54,13 @@ extern void PEX_components_init(void);
 ** ===================================================================
 */
 
-#define SIMPLE_TEST // Create one task to Read and Write some data
+// Comment out unwanted code blocks here
+//#define SIMPLE_TEST // Create one task to Read and Write some data
 //#define DOUBLE_TEST // Create Two tasks
+#define WRITE_FALSE_TEST // test two users can't both pass a write
 
 void main_task(os_task_param_t task_init_data)
 {
-  /* Write your local variable definition here */
   
   /* Initialization of Processor Expert components (when some RTOS is active). DON'T REMOVE THIS CODE!!! */
 #ifdef MainTask_PEX_RTOS_COMPONENTS_INIT
@@ -67,33 +68,29 @@ void main_task(os_task_param_t task_init_data)
 #endif 
 
 #ifdef SIMPLE_TEST
+  // Create Handler
+  _task_create(0,SERIALTASK_TASK,0);
   // Create a user task
   _task_create(0,USERTASK_TASK,0);
 #endif
 
 #ifdef DOUBLE_TEST
+  // Create Handler
+  _task_create(0,SERIALTASK_TASK,0);
   // Create a user task
   _task_create(0,USERTASK_TASK,1);
   _task_create(0,USERTASK_TASK,1);
 #endif
 
-#ifdef PEX_USE_RTOS
-  //while (1) {
+#ifdef WRITE_FALSE_TEST
+  // Create Handler
+  _task_create(0,SERIALTASK_TASK,0);
+  // Create a user task
+  _task_create(0,USERTASK_TASK,2);
+  _sched_yield(); // give UT#2 a chance to block
+  _task_create(0,USERTASK_TASK,3);
 #endif
-    /* Write your code here ... */
-    
-    
-    //OSA_TimeDelay(10);                 /* Example code (for task release) */
-   
-    
-    
-    
-#ifdef PEX_USE_RTOS   
- // }
-#endif    
 }
-
-/* END rtos_main_task */
 
 #ifdef __cplusplus
 }  /* extern "C" */

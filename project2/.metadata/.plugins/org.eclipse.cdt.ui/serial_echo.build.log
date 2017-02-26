@@ -1,4 +1,4 @@
-19:17:26 **** Incremental Build of configuration Debug for project serial_echo ****
+18:36:58 **** Incremental Build of configuration Debug for project serial_echo ****
 make all 
 Building file: ../Sources/rtos_main_task.c
 Invoking: Cross ARM C Compiler
@@ -13,9 +13,9 @@ Finished building target: serial_echo.elf
 Invoking: Cross ARM GNU Print Size
 arm-none-eabi-size --format=berkeley "serial_echo.elf"
    text	   data	    bss	    dec	    hex	filename
-  66056	   2288	   4476	  72820	  11c74	serial_echo.elf
+  66208	   2288	   4476	  72972	  11d0c	serial_echo.elf
 Finished building: serial_echo.siz
  
 
-19:17:28 Build Finished (took 2s.527ms)
+18:37:00 Build Finished (took 2s.423ms)
 

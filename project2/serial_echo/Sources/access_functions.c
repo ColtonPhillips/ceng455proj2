@@ -7,6 +7,7 @@
 
 #include "access_functions.h"
 //http://www.zentut.com/c-tutorial/c-linked-list/#Search_for_a_node
+
 // Linked List Functions:
 node_ptr create(_queue_id data ,node_ptr next)
 {
@@ -22,6 +23,7 @@ node_ptr create(_queue_id data ,node_ptr next)
     return new_node;
 }
 
+// # of nodes (0 is empty, 1 is 1 element)
 unsigned int count(node_ptr head)
 {
     node_ptr cursor = head;
@@ -34,6 +36,7 @@ unsigned int count(node_ptr head)
     return c;
 }
 
+// add to back
 node_ptr append(node_ptr head, _queue_id data)
 {
     // go to the last node
@@ -48,6 +51,7 @@ node_ptr append(node_ptr head, _queue_id data)
     return head;
 }
 
+// find a node with q id
 node_ptr search(node_ptr head,_queue_id data)
 {
 
@@ -61,6 +65,7 @@ node_ptr search(node_ptr head,_queue_id data)
     return NULL;
 }
 
+// 1st element
 node_ptr remove_back(node_ptr head)
 {
     if(head == NULL)
@@ -85,6 +90,7 @@ node_ptr remove_back(node_ptr head)
     return head;
 }
 
+// last element
 node_ptr remove_front(node_ptr head)
 {
     if(head == NULL)
@@ -100,6 +106,7 @@ node_ptr remove_front(node_ptr head)
     return head;
 }
 
+// any element
 node_ptr remove_any(node_ptr head,node_ptr nd)
 {
     // if the node is the first node
@@ -272,6 +279,21 @@ bool Close(_queue_id qid) {
 	if (qid == openWqid) {
 		putlineStatus = false;
 		OpenWStatus = false;
+		// Small chance it has read AND write priv.
+		node_ptr to_delete = search(read_head,qid);
+		if (to_delete == NULL) {
+			unlock();
+			return true; // true since it removed a W
+		}
+		else {
+			// Remove it
+			read_head = remove_any(read_head,to_delete);
+			// Set to false if its now empty
+			if (count(read_head) <= 0) {
+				OpenRStatus = false;
+				getlineStatus = false;
+			}
+		}
 		unlock();
 		return true;
 	}
@@ -284,7 +306,7 @@ bool Close(_queue_id qid) {
 	else {
 		// Remove it
 		read_head = remove_any(read_head,to_delete);
-		// Set shit to false if its now empty
+		// Set to false if its now empty
 		if (count(read_head) <= 0) {
 			OpenRStatus = false;
 			getlineStatus = false;

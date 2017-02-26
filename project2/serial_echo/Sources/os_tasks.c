@@ -99,133 +99,129 @@ void backNtimes (unsigned int num_of_bees) {
 	UART_DRV_SendData(myUART_IDX, msgBuf, strlen(msgBuf));
 }
 
+// handy blocking message getting function
+void get_msg() {
+	msg_ptr = _msgq_receive(MSGQ_ANY_QUEUE, 0);
+	if (msg_ptr == NULL) {
+		printf("\nCould not receive an ISR message\n");
+		unlock();
+		_task_block();
+	}
+}
+
+// handy function
+void handle_putline () {
+	strcpy(msgBuf,msg_ptr->DATA);
+	strcat(msgBuf,"\n\r");
+	serial_send(msgBuf);
+	_msg_free(msg_ptr);
+}
+
+// handy function
+void handle_isr () {
+	// We only Read if a user has called OpenR
+	// If not, free message and restart the while loop (receive new ISR message)
+	if (!OpenRStatus) {
+			_msg_free(msg_ptr);
+			return;
+	}
+	// Handle all the possible ISR characters
+	unsigned char new_char = msg_ptr->DATA[0];
+	unsigned int first_null_char = strlen(handleBuf);
+	//Ctrl + H: Erase character
+	if (new_char == 0x8) {
+		if (strlen(handleBuf) > 0) {
+			handleBuf[first_null_char-1] = '\0';
+			serial_send("\b \b");
+		}
+	}
+	// Ctrl + W: Erase previous word
+	else if (new_char == 0x17) {
+		int i; int space_pos = 0;
+		for (i = first_null_char-1; i > 0; i--) {
+			if(handleBuf[i] == ' ') {
+				space_pos = i;
+				break;
+			}
+		}
+		// replace space or first letter with null
+		handleBuf[space_pos] = '\0';
+		backNtimes(first_null_char-space_pos);
+	}
+	//Ctrl + U: Erase Line (and empty buffer)
+	else if (new_char == 0x15) {
+		// calculate the amount of bees necessary
+		backNtimes(first_null_char);
+		// empty buffer
+		strcpy(handleBuf,"");
+	}
+	//Enter:
+	else if (new_char == 0xd) {
+		// if getline is set, send a message!
+		if (getlineStatus) {
+			node_ptr traverse = read_head;
+			// for each reading task:
+			while (traverse != NULL) {
+				// Allocate a msg
+				MESSAGE_PTR getline_msg_ptr = (MESSAGE_PTR)_msg_alloc(message_pool);
+				if (getline_msg_ptr == NULL) {
+					printf("\nCould not allocate a message\n");
+					_task_block();
+				}
+				// Populate a message
+				getline_msg_ptr->HEADER.SOURCE_QID = 0;
+				getline_msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, traverse->data);
+				getline_msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
+					 strlen((char *)getline_msg_ptr->DATA) + 1;
+				strcpy(getline_msg_ptr->DATA, handleBuf);
+				// Send the message
+				if (!_msgq_send(getline_msg_ptr)) {
+					 printf("\nCould not send a message\n");
+					 _task_block();
+				}
+				traverse = traverse->next;
+
+			} // while end
+			// empty buffer after sending it!
+			strcpy(handleBuf,"");
+			_sched_yield();
+		}
+		// if getline not set. do nothing to the buffer, then move the cursor
+		else {}
+		// move the cursor
+		serial_send("\r\n");
+	}
+	// Tilde (~): Create a new user task TODO
+	else if (new_char == 0x7E) {
+
+	}
+	// any NORMAL character a-z and numbers, <,.; etc
+	else if (new_char >= 0x20 && new_char <= 0x7D ){
+		//send char to UART
+		serial_send(msg_ptr->DATA);
+		// concatenate buf with character
+		strcpy(msgBuf, msg_ptr->DATA);
+		strcat(handleBuf, msgBuf);
+	}
+	// throw all other characters away
+	else {}
+	_msg_free(msg_ptr); // finally free the message! :)
+}
+
 // Handler starts here:
 void serial_task(os_task_param_t task_init_data)
 {
 	handler_init();
     serial_send("\n\rType here: ");
-	_sched_yield();
     while (1) {
-    	_sched_yield();
-		// WRITE (potentially blocking)
-		// Only get a message if one has been sent!
-		if (putlineStatus) {
-			// Receive a message from ISR (lock mutex because using global memory)
-			lock();
-			msg_ptr = _msgq_receive(putline_qid, 0);
-			if (msg_ptr == NULL) {
-				printf("\nCould not receive an ISR message\n");
-				unlock();
-				_task_block();
-			}
-			strcpy(msgBuf,msg_ptr->DATA);
-			strcat(msgBuf,"\n\r");
-			serial_send(msgBuf);
-			putlineStatus = false;
-			_msg_free(msg_ptr);
-			unlock();
-		}
-
-		// ISR poll
-		msg_ptr = _msgq_poll(handler_qid);
-		if (msg_ptr == NULL) {
-				 continue;
-		}
-
-		// READ
-		// We only Read if a user has called OpenR
-		// If not, free message and restart the while loop (receive new ISR message)
-		if (!OpenRStatus) {
-				_msg_free(msg_ptr);
-				continue;
-		}
-
-
-		// implicit ELSE
-		// Handle all the possible ISR characters
-		unsigned char new_char = msg_ptr->DATA[0];
-		unsigned int first_null_char = strlen(handleBuf);
-		//Ctrl + H: Erase character
-		if (new_char == 0x8) {
-			if (strlen(handleBuf) > 0) {
-				handleBuf[first_null_char-1] = '\0';
-				serial_send("\b \b");
-			}
-		}
-		// Ctrl + W: Erase previous word
-		else if (new_char == 0x17) {
-			int i; int space_pos = 0;
-			for (i = first_null_char-1; i > 0; i--) {
-				if(handleBuf[i] == ' ') {
-					space_pos = i;
-					break;
-				}
-			}
-			// replace space or first letter with null
-			handleBuf[space_pos] = '\0';
-			backNtimes(first_null_char-space_pos);
-		}
-		//Ctrl + U: Erase Line (and empty buffer)
-		else if (new_char == 0x15) {
-			// calculate the amount of bees necessary
-			backNtimes(first_null_char);
-			// empty buffer
-			strcpy(handleBuf,"");
-		}
-		//Enter:
-		else if (new_char == 0xd) {
-			// if getline is set, send a message!
-			if (getlineStatus) {
-				node_ptr traverse = read_head;
-				// for each reading task:
-				while (traverse != NULL) {
-					// Allocate a msg
-					MESSAGE_PTR getline_msg_ptr = (MESSAGE_PTR)_msg_alloc(message_pool);
-					if (getline_msg_ptr == NULL) {
-						printf("\nCould not allocate a message\n");
-						_task_block();
-					}
-					// Populate a message
-					getline_msg_ptr->HEADER.SOURCE_QID = 0;
-					getline_msg_ptr->HEADER.TARGET_QID = _msgq_get_id(0, traverse->data);
-					getline_msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
-						 strlen((char *)getline_msg_ptr->DATA) + 1;
-					strcpy(getline_msg_ptr->DATA, handleBuf);
-					// Send the message
-					if (!_msgq_send(getline_msg_ptr)) {
-					  	 printf("\nCould not send a message\n");
-					  	 _task_block();
-					}
-					traverse = traverse->next;
-
-				} // while end
-				// empty buffer after sending it!
-				strcpy(handleBuf,"");
-				_sched_yield();
-			}
-			// if getline not set. do nothing to the buffer, then move the cursor
-			else {}
-			// move the cursor
-			serial_send("\r\n");
-		}
-		// Tilde (~): Create a new user task TODO
-		else if (new_char == 0x7E) {
-
-		}
-		// any NORMAL character a-z and numbers, <,.; etc
-		else if (new_char >= 0x20 && new_char <= 0x7D ){
-			//send char to UART
-			serial_send(msg_ptr->DATA);
-			// concatenate buf with character
-			strcpy(msgBuf, msg_ptr->DATA);
-			strcat(handleBuf, msgBuf);
-		}
-		// throw all other characters away
-		else {}
-		_msg_free(msg_ptr); // finally free the message! :)
-
-		// debug print statements:
-		//printf("buf: %s\n",handleBuf);
+    	get_msg();
+    	if (msg_ptr->HEADER.TARGET_QID == _msgq_get_id(0, PUTLINE_QUEUE)) { // putline
+    		handle_putline();
+    	}
+    	else if (msg_ptr->HEADER.TARGET_QID == _msgq_get_id(0, HANDLER_QUEUE)) { // isr
+    		handle_isr();
+    	}
+    	else {}
  	 } // while end
 }
 
@@ -243,9 +239,8 @@ void user_task(os_task_param_t task_init_data)
 	// we will use a switch case to decide what our task will do!
 	unsigned int type = task_init_data;
 	_queue_id ut_q; // For getline (when a user task reads)
-	bool s = false; // the status of a function call is stored here
 	char out[BUFFER_SIZE]; // used to pass into access functions
-
+	strcpy(out,"TEST!");
 	lock();
 	// Open a unique message queue
 	ut_q  = _msgq_open(GETLINE_QUEUE+num_of_tasks, 0);
@@ -301,10 +296,25 @@ void user_task(os_task_param_t task_init_data)
 		assert(Close(ut_q));
 	printf("User %d calls Close.\n",ut_q);
 		break;
+	// 3rd test for Saman:
+	case 2:
+		assert(OpenW(ut_q));
+	printf("User %d calls OpenW.\n",ut_q);
+		assert(_putline(ut_q, out));
+	printf("User %d calls _putline.\n",ut_q);
+		// DONT call Close, so that case 3: can fail.
+		break;
+	case 3:
+		//You can't have two thing open for W yo.
+		assert(OpenW(ut_q) == false);
+	printf("User %d calls OpenW.\n",ut_q);
+		assert(_putline(ut_q,out) == false);
+	printf("User %d calls _putline.\n",ut_q);
+		assert(OpenR(ut_q));
+	printf("User %d calls OpenR.\n",ut_q);
 	default:
 		break;
 	}
-
 /*
 	printf("User %d calls OpenR.\n",ut_q);
 	printf("User %d calls _getline and it returns: %s\n",ut_q, out);
@@ -315,6 +325,7 @@ void user_task(os_task_param_t task_init_data)
 	*/
 
 	printf("User %d terminates\n\n",ut_q);
+	_task_block();
 }
 
 /* END os_tasks */
