@@ -298,11 +298,15 @@ void user_task(os_task_param_t task_init_data)
 		break;
 	// 3rd test for Saman:
 	case 2:
-		assert(OpenW(ut_q));
+		assert(OpenR(ut_q));
+	printf("User %d calls OpenR.\n",ut_q);
+	assert(OpenW(ut_q));
 	printf("User %d calls OpenW.\n",ut_q);
-		assert(_putline(ut_q, out));
+		assert(_getline(out,ut_q));
+	printf("User %d calls _getline and it returns: %s\n",ut_q, out);
+	assert(_putline(ut_q, out));
 	printf("User %d calls _putline.\n",ut_q);
-		// DONT call Close, so that case 3: can fail.
+	// DONT call Close, so that case 3: can fail.
 		break;
 	case 3:
 		//You can't have two thing open for W yo.
